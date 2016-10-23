@@ -1,2 +1,6 @@
 .idea/**
 out/**
+.DS_Store
+src/.DS_Store
+src/com/.DS_Store
+src/com/h/.DS_Store
