@@ -205,34 +205,20 @@ public class InMemoryTradeRepository implements SimpleStockTradingRepository {
             }
             tickerTradeList.add(trade);
         }
-        catch (Exception e){
-            log.append("Error while booking a trade.");
-            e.printStackTrace(); //ToDo
-            throw e;
-        }
         finally {
-            //ToDo refactor the repo ifc, per comment there, move the invalidate calls to event handlers.
-            log.append("Entering trade order post processing.");
-            log.append("Invalidating relevant index and ticker calculations.");
-            try {
-                try {
-                    stock.invalidateCalculationResults();
-                }
-                finally {
-                    //this will invalidate the cached data of all indexes which contain the stock now.
-                    //if the stock is added to the index later, it will invalidate itself.
-                    //will also unlock indexes.
-                    getEquityIndexesByComponent(stock).forEach(EqIndex::invalidateCalculationResults);
-                }
-            }
-            catch (Exception i){
-                log.append("Error while post processing trade."); //ToDo really, add log levels.
-                i.printStackTrace();
-                throw i;
-            }
-            finally {
-                tradeLock.unlock();
-                log.append("Trade order processing completed.");
+
+            tradeLock.unlock();
+
+            if (stock != null) {
+
+                //ToDo refactor the repo ifc, per comment there, move the invalidate calls to event handlers.
+                log.append("Entering trade order post processing.");
+                log.append("Invalidating relevant index and ticker calculations.");
+                //this will invalidate the cached data of all indexes which contain the stock now.
+                //if the stock is added to the index later, it will invalidate itself.
+                //will also unlock indexes.
+                stock.invalidateCalculationResults();
+                getEquityIndexesByComponent(stock).forEach(EqIndex::invalidateCalculationResults);
             }
         }
     }

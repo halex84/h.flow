@@ -41,17 +41,19 @@ public class Desk implements SimpleStockTradingDesk {
         log.append("%s booking a trade: ticker=%s, qty=%s, price=%s, buySell=%s.",
                 new Object[]{deskId, ticker, qty, price, buySell});
 
-        Stock stock = repository.getStockByTicker(ticker);
-        if (stock == null){
+        EqTrade trade = new EqTrade(deskId, ticker, qty, buySell, price);
 
-            throw new InvalidArgumentException(new String[]{
-                    String.format("Ticker: %s wasn't found while booking a trade: qty=%s, price=%s, buySell=%s, desk=%s",
-                            ticker, qty, price, buySell, deskId)});
+        try {
+            repository.addEqTrade(trade);
         }
+        catch (Exception e){
 
-        EqTrade trade = new EqTrade(deskId, stock.getTicker(), qty, buySell, price);
+            log.append("%s experienced an error while booking a trade: ticker=%s, qty=%s, price=%s, buySell=%s.",
+                    new Object[] { deskId, ticker, qty, price, buySell });
 
-        repository.addEqTrade(trade);
+            e.printStackTrace();
+            throw e;
+        }
 
         trades.add(trade);
 
