@@ -1,5 +1,6 @@
 package com.h.tests;
 
+import com.h.contracts.CalculationException;
 import com.h.contracts.EqStockContract;
 import com.h.contracts.TradeContract;
 import com.h.mkt.data.BuySell;
@@ -8,10 +9,8 @@ import com.h.repositories.InMemoryTradeRepository;
 import com.h.repositories.SimpleStockTradingRepository;
 import com.h.services.DataDispatcher;
 import com.h.services.TradeDispatcher;
-import com.sun.javaws.exceptions.InvalidArgumentException;
 import org.junit.After;
 import org.junit.Test;
-
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
@@ -25,7 +24,7 @@ import static org.junit.Assert.assertEquals;
  */
 public class TradeDispatcherTest {
 
-    @Test(expected=InvalidArgumentException.class)
+    @Test(expected=CalculationException.class)
     public void bookTradeMustFailOnMissingTickers() throws Exception {
 
         //prepare.

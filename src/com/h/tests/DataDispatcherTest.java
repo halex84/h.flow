@@ -1,5 +1,6 @@
 package com.h.tests;
 
+import com.h.contracts.CalculationException;
 import com.h.contracts.EqIndexContract;
 import com.h.contracts.EqStockContract;
 import com.h.mkt.data.EqIndex;
@@ -8,7 +9,6 @@ import com.h.mkt.data.StockType;
 import com.h.repositories.InMemoryTradeRepository;
 import com.h.services.DataDispatcher;
 import com.h.repositories.SimpleStockTradingRepository;
-import com.sun.javaws.exceptions.InvalidArgumentException;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
@@ -81,7 +81,7 @@ public class DataDispatcherTest {
         assertEquals(0, bcs.getParValueDividendPct(), 0);
     }
 
-    @Test(expected=InvalidArgumentException.class)
+    @Test(expected=CalculationException.class)
     public void addOrUpdateEquityIndexMustThrowOnMissingComponents() throws Exception {
 
         //set-up: create some tickers but not all.

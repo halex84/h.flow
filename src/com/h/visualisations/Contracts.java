@@ -1,11 +1,11 @@
 package com.h.visualisations;
 
+import com.h.contracts.CalculationException;
 import com.h.contracts.EqIndexContract;
 import com.h.contracts.EqStockContract;
 import com.h.contracts.TradeContract;
 import com.h.mkt.data.BuySell;
 import com.h.mkt.data.StockType;
-import com.sun.javaws.exceptions.InvalidArgumentException;
 
 import java.math.BigDecimal;
 
@@ -18,12 +18,12 @@ class Contracts {
      * Builds a trade contract from the command line arguments.
      * @param specifics deskId, (buy|sell), TICKER, qty, price
      * @return trade contract
-     * @throws InvalidArgumentException if arguments are invalid.
+     * @throws CalculationException if arguments are invalid.
      */
-    public static TradeContract Trade(String[] specifics) throws InvalidArgumentException {
+    public static TradeContract Trade(String[] specifics) throws CalculationException {
 
         if (!validateTradeArguments(specifics)){
-            throw new InvalidArgumentException(specifics);
+            throw new CalculationException("invalid arguments");
         }
 
         BuySell buySell = BuySell.valueOf(specifics[0]);
@@ -37,12 +37,12 @@ class Contracts {
     /**
      * Builds a stock contract from the command line arguments.
      * @param specifics: TICKER, common|preferred, { common: lastDividend }, { preferred: parValue, parValueDividendPct }
-     * @throws InvalidArgumentException if arguments are invalid.
+     * @throws CalculationException if arguments are invalid.
      */
-    public static EqStockContract Stock(String[] specifics) throws InvalidArgumentException {
+    public static EqStockContract Stock(String[] specifics) throws CalculationException {
 
         if (!validateStockArguments(specifics)){
-            throw new InvalidArgumentException(specifics);
+            throw new CalculationException("invalid arguments");
         }
 
         StockType type = StockType.valueOf(specifics[1]);
@@ -54,18 +54,18 @@ class Contracts {
                 return new EqStockContract(specifics[0], Double.parseDouble(specifics[2]), Double.parseDouble(specifics[3]));
         }
 
-        throw new InvalidArgumentException(new String[]{"stock.type"});
+        throw new CalculationException("stock.type unknown");
     }
 
     /**
      * Builds an index contract from the command line arguments.
      * @param specifics: TICKER, ST1,ST2,..,STn (2nd arg: csv without spaces of component tickers)
-     * @throws InvalidArgumentException if arguments are invalid.
+     * @throws CalculationException if arguments are invalid.
      */
-    public static EqIndexContract Index(String[] specifics) throws InvalidArgumentException {
+    public static EqIndexContract Index(String[] specifics) throws CalculationException {
 
         if (!validateIndexArguments(specifics)){
-            throw new InvalidArgumentException(specifics);
+            throw new CalculationException("invalid arguments");
         }
 
         return new EqIndexContract(specifics[0], specifics[1].split(","));

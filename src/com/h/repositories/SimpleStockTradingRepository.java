@@ -1,7 +1,7 @@
 package com.h.repositories;
 
+import com.h.contracts.CalculationException;
 import com.h.mkt.data.*;
-import com.sun.javaws.exceptions.InvalidArgumentException;
 import java.util.Date;
 import java.util.List;
 
@@ -60,7 +60,7 @@ public interface SimpleStockTradingRepository {
     //without - i'm sorry - no automatic index component mapping updates.
     //u can manually invoke the index modification api after adding a new stock,
     //if u'd like to endeavour to maintain an 'all stocks' index.
-    void addEqTrade(EqTrade trade) throws InvalidArgumentException;
+    void addEqTrade(EqTrade trade) throws CalculationException;
 
     /**
      * Gets the trades for the ticker made after the date.

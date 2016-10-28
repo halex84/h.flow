@@ -1,11 +1,11 @@
 package com.h.visualisations;
 
+import com.h.contracts.CalculationException;
 import com.h.logging.LogFactory;
 import com.h.logging.Logger;
 import com.h.services.CalcDispatcher;
 import com.h.services.DataDispatcher;
 import com.h.services.TradeDispatcher;
-import com.sun.javaws.exceptions.InvalidArgumentException;
 import java.util.Arrays;
 
 public class Environment {
@@ -43,10 +43,10 @@ public class Environment {
         return true;
     }
 
-    private Environment(String[] arguments) throws InvalidArgumentException {
+    private Environment(String[] arguments) throws CalculationException {
 
         if (!validateArguments(arguments)){
-            throw new InvalidArgumentException(arguments);
+            throw new CalculationException("invalid arguments");
         }
 
         argument0 = Operation.valueOf(arguments[0]);
@@ -78,7 +78,7 @@ public class Environment {
     private int argument1;
     private String[] specifics;
 
-    private void run() throws InvalidArgumentException {
+    private void run() throws CalculationException {
 
         switch (argument0){
             case a: {

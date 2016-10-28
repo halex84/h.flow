@@ -1,7 +1,7 @@
 package com.h.mkt;
 
+import com.h.contracts.CalculationException;
 import com.h.repositories.SimpleStockTradingRepository;
-import com.sun.javaws.exceptions.InvalidArgumentException;
 import java.math.BigDecimal;
 
 /**
@@ -10,6 +10,6 @@ import java.math.BigDecimal;
  */
 public interface SimpleStockTradingDesk {
 
-    void buy(SimpleStockTradingRepository repository, String ticker, int qty, BigDecimal price) throws InvalidArgumentException;
-    void sell(SimpleStockTradingRepository repository, String ticker, int qty, BigDecimal price) throws InvalidArgumentException;
+    void buy(SimpleStockTradingRepository repository, String ticker, int qty, BigDecimal price) throws CalculationException;
+    void sell(SimpleStockTradingRepository repository, String ticker, int qty, BigDecimal price) throws CalculationException;
 }

@@ -1,9 +1,9 @@
 package com.h.mkt.data;
 
+import com.h.contracts.CalculationException;
 import com.h.logging.Logger;
 import com.h.mkt.calc.SimpleStockCalculator;
 import com.h.repositories.SimpleStockTradingRepository;
-import com.sun.javaws.exceptions.InvalidArgumentException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +44,7 @@ public class EqIndex {
         return stocks;
     }
 
-    public void setComponents(SimpleStockTradingRepository repository, String[] componentTickers) throws InvalidArgumentException {
+    public void setComponents(SimpleStockTradingRepository repository, String[] componentTickers) throws CalculationException {
 
         ArrayList<Stock> components = new ArrayList<>();
         for (String st : componentTickers){
@@ -52,8 +52,8 @@ public class EqIndex {
             Stock stock = repository.getStockByTicker(st);
             if (stock == null){
 
-                throw new InvalidArgumentException(new String[]{
-                        String.format("Ticker: %s wasn't found while updating index: %s.", st, ticker)});
+                throw new CalculationException(
+                        String.format("Ticker: %s wasn't found while updating index: %s.", st, ticker));
             }
             else {
                 components.add(stock);
@@ -109,7 +109,7 @@ public class EqIndex {
         log.append("Invalidated index value: %s.", new String[]{ticker});
     }
 
-    public BigDecimal getCurrentValue(SimpleStockTradingRepository repository, SimpleStockCalculator indexPvCalculator) throws InvalidArgumentException {
+    public BigDecimal getCurrentValue(SimpleStockTradingRepository repository, SimpleStockCalculator indexPvCalculator) throws CalculationException {
 
         if (isPvValid) {
             return pv;

@@ -1,5 +1,6 @@
 package com.h.tests;
 
+import com.h.contracts.CalculationException;
 import com.h.contracts.EqIndexContract;
 import com.h.contracts.EqStockContract;
 import com.h.contracts.TradeContract;
@@ -8,7 +9,6 @@ import com.h.repositories.InMemoryTradeRepository;
 import com.h.services.CalcDispatcher;
 import com.h.services.DataDispatcher;
 import com.h.services.TradeDispatcher;
-import com.sun.javaws.exceptions.InvalidArgumentException;
 import org.junit.After;
 import org.junit.Test;
 
@@ -21,25 +21,25 @@ import static org.junit.Assert.*;
  */
 public class CalcDispatcherTest {
 
-    @Test(expected=InvalidArgumentException.class)
+    @Test(expected=CalculationException.class)
     public void pvCalcMustFailForUnknownTickers() throws Exception {
 
         CalcDispatcher.pvCalc("ABCD");
     }
 
-    @Test(expected=InvalidArgumentException.class)
+    @Test(expected=CalculationException.class)
     public void peCalcMustFailForUnknownTickers() throws Exception {
 
         CalcDispatcher.peCalc("ABCD");
     }
 
-    @Test(expected=InvalidArgumentException.class)
+    @Test(expected=CalculationException.class)
     public void dividendYieldCalcMustFailForUnknownTickers() throws Exception {
 
         CalcDispatcher.dividendYieldCalc("ABCD");
     }
 
-    @Test(expected=InvalidArgumentException.class)
+    @Test(expected=CalculationException.class)
     public void calcIndexMustFailForUnknownIndexTickers() throws Exception {
 
         CalcDispatcher.calcIndex("I");
@@ -161,13 +161,13 @@ public class CalcDispatcherTest {
         assertEquals(86.09465555973358, CalcDispatcher.calcIndexAllStocks().doubleValue(), 0);
     }
 
-    private void addIndex() throws InvalidArgumentException {
+    private void addIndex() throws CalculationException {
 
         EqIndexContract eqIdx = new EqIndexContract("I", new String[]{});
         DataDispatcher.addOrUpdateEquityIndex(eqIdx);
     }
 
-    private void addIndexAndComponents() throws InvalidArgumentException {
+    private void addIndexAndComponents() throws CalculationException {
 
         DataDispatcher.addOrUpdateTicker(new EqStockContract("ABCD", 20));
         DataDispatcher.addOrUpdateTicker(new EqStockContract("BCDE", 10));
@@ -179,7 +179,7 @@ public class CalcDispatcherTest {
         DataDispatcher.addOrUpdateEquityIndex(eqIdx);
     }
 
-    private void addIndexComponentTrades() throws InvalidArgumentException {
+    private void addIndexComponentTrades() throws CalculationException {
 
         TradeDispatcher.bookTrade(new TradeContract("eq", BuySell.buy, "ABCD", 2000, BigDecimal.valueOf(20)));
         TradeDispatcher.bookTrade(new TradeContract("eq", BuySell.buy, "ABCD", 100, BigDecimal.valueOf(19)));

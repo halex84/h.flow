@@ -1,8 +1,8 @@
 package com.h.mkt.calc;
 
+import com.h.contracts.CalculationException;
 import com.h.logging.Logger;
 import com.h.repositories.SimpleStockTradingRepository;
-import com.sun.javaws.exceptions.InvalidArgumentException;
 import java.math.BigDecimal;
 
 /**
@@ -15,7 +15,7 @@ public class AllStocksIndexValueCalculator extends IndexValueCalculator {
     }
 
     @Override
-    public BigDecimal calculate(String ticker, SimpleStockTradingRepository repository) throws InvalidArgumentException {
+    public BigDecimal calculate(String ticker, SimpleStockTradingRepository repository) throws CalculationException {
 
         log.append("Calculating value of all stocks index.");
         BigDecimal idxPv = calculate(repository.getStocks(), repository);

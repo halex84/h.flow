@@ -1,7 +1,7 @@
 package com.h.mkt.calc;
 
+import com.h.contracts.CalculationException;
 import com.h.repositories.SimpleStockTradingRepository;
-import com.sun.javaws.exceptions.InvalidArgumentException;
 
 import java.math.BigDecimal;
 
@@ -10,5 +10,5 @@ import java.math.BigDecimal;
  */
 public interface SimpleStockCalculator {
 
-    BigDecimal calculate(String ticker, SimpleStockTradingRepository repository) throws InvalidArgumentException;
+    BigDecimal calculate(String ticker, SimpleStockTradingRepository repository) throws CalculationException;
 }

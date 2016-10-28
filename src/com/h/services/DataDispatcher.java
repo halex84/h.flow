@@ -1,5 +1,6 @@
 package com.h.services;
 
+import com.h.contracts.CalculationException;
 import com.h.contracts.EqIndexContract;
 import com.h.contracts.EqStockContract;
 import com.h.logging.LogFactory;
@@ -8,7 +9,6 @@ import com.h.mkt.data.EqIndex;
 import com.h.mkt.data.Stock;
 import com.h.repositories.InMemoryTradeRepository;
 import com.h.repositories.SimpleStockTradingRepository;
-import com.sun.javaws.exceptions.InvalidArgumentException;
 
 /**
  * DataDispatcher API
@@ -46,7 +46,7 @@ public class DataDispatcher {
     /**
      * Creates or updates an equity stock index.
      */
-    public static void addOrUpdateEquityIndex(EqIndexContract index) throws InvalidArgumentException {
+    public static void addOrUpdateEquityIndex(EqIndexContract index) throws CalculationException {
 
         log.append("Equity index update requested: %s.", new String[]{index.ticker});
 

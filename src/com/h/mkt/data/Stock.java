@@ -1,9 +1,9 @@
 package com.h.mkt.data;
 
+import com.h.contracts.CalculationException;
 import com.h.logging.Logger;
 import com.h.mkt.calc.SimpleStockCalculator;
 import com.h.repositories.SimpleStockTradingRepository;
-import com.sun.javaws.exceptions.InvalidArgumentException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
@@ -40,7 +40,7 @@ public class Stock {
     public double getParValue() { return parValue; }
     public double getParValueDividendPct() { return parValueDividendPct; }
 
-    public BigDecimal getLastOrPreferredDividend() throws InvalidArgumentException {
+    public BigDecimal getLastOrPreferredDividend() throws CalculationException {
 
         switch (type) {
             case common:
@@ -49,7 +49,7 @@ public class Stock {
                 return BigDecimal.valueOf((parValueDividendPct / 100) * parValue);
         }
 
-        throw new InvalidArgumentException(new String[]{"stockType" });
+        throw new CalculationException("stockType");
     }
 
     //a note on locks:
@@ -84,7 +84,7 @@ public class Stock {
         log.append("Invalidated ticker calculation results: %s.", new String[]{ticker});
     }
 
-    public BigDecimal getCurrentPv(SimpleStockTradingRepository repository, SimpleStockCalculator calculator) throws InvalidArgumentException {
+    public BigDecimal getCurrentPv(SimpleStockTradingRepository repository, SimpleStockCalculator calculator) throws CalculationException {
 
         if (isPvValid){
             return pv;
@@ -94,7 +94,7 @@ public class Stock {
         return pv;
     }
 
-    public BigDecimal getCurrentPe(SimpleStockTradingRepository repository, SimpleStockCalculator calculator) throws InvalidArgumentException {
+    public BigDecimal getCurrentPe(SimpleStockTradingRepository repository, SimpleStockCalculator calculator) throws CalculationException {
 
         if (isPeValid) {
             return pe;
@@ -104,7 +104,7 @@ public class Stock {
         return pe;
     }
 
-    public BigDecimal getCurrentDy(SimpleStockTradingRepository repository, SimpleStockCalculator calculator) throws InvalidArgumentException {
+    public BigDecimal getCurrentDy(SimpleStockTradingRepository repository, SimpleStockCalculator calculator) throws CalculationException {
 
         if (isDyValid){
             return dy;

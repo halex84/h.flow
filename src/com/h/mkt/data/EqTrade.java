@@ -1,6 +1,5 @@
 package com.h.mkt.data;
 
-import com.sun.javaws.exceptions.InvalidArgumentException;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -9,7 +8,7 @@ import java.util.Date;
  */
 public class EqTrade {
 
-    public EqTrade(String deskId, String ticker, int qty, BuySell buySell, BigDecimal price) throws InvalidArgumentException {
+    public EqTrade(String deskId, String ticker, int qty, BuySell buySell, BigDecimal price) {
 
         this.deskId = deskId;
         this.ticker = ticker;

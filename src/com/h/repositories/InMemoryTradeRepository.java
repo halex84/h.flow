@@ -1,9 +1,9 @@
 package com.h.repositories;
 
+import com.h.contracts.CalculationException;
 import com.h.logging.LogFactory;
 import com.h.logging.Logger;
 import com.h.mkt.data.*;
-import com.sun.javaws.exceptions.InvalidArgumentException;
 
 import java.util.*;
 import java.util.concurrent.locks.Lock;
@@ -184,7 +184,7 @@ public class InMemoryTradeRepository implements SimpleStockTradingRepository {
     }
 
     @Override
-    public void addEqTrade(EqTrade trade) throws InvalidArgumentException {
+    public void addEqTrade(EqTrade trade) throws CalculationException {
 
         log.append("Trade order arrived for processing.");
         Stock stock = null;
@@ -193,7 +193,7 @@ public class InMemoryTradeRepository implements SimpleStockTradingRepository {
         try {
             stock = getStockByTicker(trade.getTicker());
             if (stock == null){
-                throw new InvalidArgumentException(new String[]{"unknown ticker"});
+                throw new CalculationException("unknown ticker");
             }
             List<EqTrade> tickerTradeList;
             if (trades.containsKey(stock.getTicker())){
