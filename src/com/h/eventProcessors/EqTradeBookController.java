@@ -1,4 +1,4 @@
-package com.h.contexts.eventProcessors;
+package com.h.eventProcessors;
 
 import com.h.contexts.CalculationException;
 import com.h.contexts.DomainEventObserver;

@@ -1,6 +1,6 @@
 package com.h.contexts;
 
-import com.h.contexts.eventProcessors.EqTradeBookController;
+import com.h.eventProcessors.EqTradeBookController;
 import com.h.logging.LogFactory;
 import com.h.logging.Logger;
 
