@@ -1,7 +1,6 @@
 package com.h.runtime;
 
 import java.io.BufferedReader;
-import java.io.Console;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
@@ -23,18 +22,24 @@ class Main {
     public static void main(String[] args) throws IOException {
 
         while(Environment.process(getCommandArgsFromConsole())) { }
+
+        System.out.println();
+        System.out.print("Have a nice day.");
     }
 
     private static String[] getCommandArgsFromConsole() throws IOException {
 
+        System.out.println();
         System.out.print("Command ['t' to exit]#>");
         BufferedReader inputReader = new BufferedReader(new InputStreamReader(System.in));
         String command = inputReader.readLine();
         String[] commandArgs = command.split("\\s+");
+        System.out.println();
         System.out.print("Running. Args...");
         for (int i = 0; i < commandArgs.length; i++){
-            System.out.format("%s: %s", i+1, commandArgs[i]);
+            System.out.format("{%s: %s}", i+1, commandArgs[i]);
         }
+        System.out.println();
         return commandArgs;
     }
 }
