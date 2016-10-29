@@ -53,12 +53,11 @@ public interface DomainContext {
      */
     Stock getStockByTicker(String ticker);
 
-    //ToDo publish domain modified (trade post processing, etc.) events.
-    //while adding an eq trade a repo must invalidate its eq and idx calc results.
-    //this would help a lot when e.g. adding a new stock to add it to an index. :)
-    //without - i'm sorry - no automatic index component mapping updates.
-    //u can manually invoke the index modification api after adding a new stock,
-    //if u'd like to endeavour to maintain an 'all stocks' index.
+    /**
+     * Adds an equity trade to the context.
+     * @param trade to add
+     * @throws CalculationException in case of failure.
+     */
     void addEqTrade(EqTrade trade) throws CalculationException;
 
     /**
@@ -73,4 +72,10 @@ public interface DomainContext {
      * Clears the repository of all data.
      */
     void housekeep();
+
+    /**
+     * Context will use it to dispatch the events it generates.
+     * @param dispatcher to use.
+     */
+    void setEventDispatcher(DomainEventDispatcher dispatcher);
 }

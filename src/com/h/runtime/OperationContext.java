@@ -25,7 +25,7 @@ public class OperationContext {
         this.tradeDispatcher = tradeDispatcher;
     }
 
-    private OperationParameters args;
+    private TerminalArguments args;
     private boolean amRunnable = false;
 
     public OperationContext run() {
@@ -115,7 +115,7 @@ public class OperationContext {
 
         try{
             //remember to print usage and validation for new functionality.
-            oc.args = new OperationParameters(args);
+            oc.args = new TerminalArguments(args);
             oc.amRunnable = true;
         }
         catch (Exception e){ e.printStackTrace(); }

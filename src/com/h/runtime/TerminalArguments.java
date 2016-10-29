@@ -24,7 +24,7 @@ import java.util.Arrays;
  iv. Calculate Stock Price based on trades recorded in past 15 minutes
  b. Calculate the GBCE All Share Index using the geometric mean of prices for all stocks
  */
-public class OperationParameters {
+public class TerminalArguments {
 
     public enum Operation {
         calc,
@@ -67,7 +67,7 @@ public class OperationParameters {
      * load tradeFile pathToFile
      * ->Files should contain arrays of JSON serialized contract objects.
      */
-    public OperationParameters(String[] arguments) {
+    public TerminalArguments(String[] arguments) {
 
         contractsMapper = new ContractsMapper();
         operation = Operation.valueOf(arguments[0]);

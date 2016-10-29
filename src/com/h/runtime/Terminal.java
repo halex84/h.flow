@@ -12,7 +12,7 @@ import java.io.InputStreamReader;
 /**
  * Created by halex on 10/22/16.
  */
-class Main {
+class Terminal {
 
     public static void main(String[] args) throws IOException {
 

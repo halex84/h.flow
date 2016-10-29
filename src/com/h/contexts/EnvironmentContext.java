@@ -1,5 +1,6 @@
 package com.h.contexts;
 
+import com.h.events.EqTradeBooked;
 import com.h.logging.LogFactory;
 import com.h.logging.Logger;
 import com.h.mkt.data.*;
@@ -22,6 +23,7 @@ public class EnvironmentContext implements DomainContext {
         try{
             if (instance == null){
                 instance = new EnvironmentContext(LogFactory.makeLogger());
+                instance.setEventDispatcher(EnvironmentDispatcher.getInstance());
             }
             return instance;
         }
@@ -40,6 +42,8 @@ public class EnvironmentContext implements DomainContext {
     private final Map<String, EqIndex> eqIndexes = new HashMap<>();
 
     private final Logger log;
+
+    private DomainEventDispatcher eventDispatcher;
 
     private EnvironmentContext(Logger logger){
         log = logger;
@@ -205,19 +209,9 @@ public class EnvironmentContext implements DomainContext {
             tickerTradeList.add(trade);
         }
         finally {
-
             tradeLock.unlock();
-
             if (stock != null) {
-
-                //ToDo refactor the repo ifc, per comment there, move the invalidate calls to event handlers.
-                log.append("Entering trade order post processing.");
-                log.append("Invalidating relevant index and ticker calculations.");
-                //this will invalidate the cached data of all indexes which contain the stock now.
-                //if the stock is added to the index later, it will invalidate itself.
-                //will also unlock indexes.
-                stock.invalidateCalculationResults();
-                getEquityIndexesByComponent(stock).forEach(EqIndex::invalidateCalculationResults);
+                eventDispatcher.dispatch(new EqTradeBooked(trade, stock, getEquityIndexesByComponent(stock)));
             }
         }
     }
@@ -261,5 +255,10 @@ public class EnvironmentContext implements DomainContext {
             stockLock.unlock();
             tradeLock.unlock();
         }
+    }
+
+    @Override
+    public void setEventDispatcher(DomainEventDispatcher dispatcher) {
+        eventDispatcher = dispatcher;
     }
 }
