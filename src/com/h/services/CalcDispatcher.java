@@ -15,63 +15,65 @@ import java.math.BigDecimal;
  */
 public class CalcDispatcher {
 
+    private final DomainContext context;
+
+    public CalcDispatcher(DomainContext context){
+        this.context = context;
+    }
+
     //ToDo replace calculators with expressions.
 
-    public static BigDecimal pvCalc(String ticker) throws CalculationException {
+    public BigDecimal pvCalc(String ticker) throws CalculationException {
 
         SimpleStockCalculator pvCalc = new PvCalculator(LogFactory.makeLogger());
-        DomainContext repository = EnvironmentContext.getInstance();
-        Stock stock = repository.getStockByTicker(ticker);
+        Stock stock = context.getStockByTicker(ticker);
         if (stock == null){
             throw new CalculationException("unknown ticker");
         }
-        return stock.getCurrentPv(repository, pvCalc);
+        //the domain object might want to look around the repo itself,
+        //after all it is in charge of caching and consistency of it's root.
+        //the calc is only a calc, with it's own dependencies.
+        //let's not have a factory - for now.
+        return stock.getCurrentPv(context, pvCalc);
     }
 
-    public static BigDecimal peCalc(String ticker) throws CalculationException {
+    public BigDecimal peCalc(String ticker) throws CalculationException {
 
         SimpleStockCalculator pvCalc = new PvCalculator(LogFactory.makeLogger());
         SimpleStockCalculator peCalc = new PeCalculator(LogFactory.makeLogger(), pvCalc);
-        DomainContext repository = EnvironmentContext.getInstance();
-        Stock stock = repository.getStockByTicker(ticker);
+        Stock stock = context.getStockByTicker(ticker);
         if (stock == null){
             throw new CalculationException("unknown ticker");
         }
-        return stock.getCurrentPe(repository, peCalc);
+        return stock.getCurrentPe(context, peCalc);
     }
 
-    public static BigDecimal dividendYieldCalc(String ticker) throws CalculationException {
+    public BigDecimal dividendYieldCalc(String ticker) throws CalculationException {
 
         SimpleStockCalculator pvCalc = new PvCalculator(LogFactory.makeLogger());
         SimpleStockCalculator dyCalc = new DividendYieldCalculator(LogFactory.makeLogger(), pvCalc);
-        DomainContext repository = EnvironmentContext.getInstance();
-        Stock stock = repository.getStockByTicker(ticker);
+        Stock stock = context.getStockByTicker(ticker);
         if (stock == null){
             throw new CalculationException("unknown ticker");
         }
-        //this will cache the value.
-        //just invoking the calc won't.
-        //the calc doesn't care about the domain and architecture.
-        return stock.getCurrentDy(repository, dyCalc);
+        return stock.getCurrentDy(context, dyCalc);
     }
 
-    public static BigDecimal calcIndex(String ticker) throws CalculationException {
+    public BigDecimal calcIndex(String ticker) throws CalculationException {
 
         SimpleStockCalculator pvCalc = new PvCalculator(LogFactory.makeLogger());
-        DomainContext repository = EnvironmentContext.getInstance();
         SimpleStockCalculator idxPvCalc = new EqIndexValueCalculator(LogFactory.makeLogger(), pvCalc);
-        EqIndex index = repository.getEquityIndexByTicker(ticker);
+        EqIndex index = context.getEquityIndexByTicker(ticker);
         if (index == null){
             throw new CalculationException("unknown eq. index");
         }
-        return index.getCurrentValue(repository, idxPvCalc);
+        return index.getCurrentValue(context, idxPvCalc);
     }
 
-    public static BigDecimal calcIndexAllStocks() throws CalculationException {
+    public BigDecimal calcIndexAllStocks() throws CalculationException {
 
         SimpleStockCalculator pvCalc = new PvCalculator(LogFactory.makeLogger());
-        DomainContext repository = EnvironmentContext.getInstance();
         SimpleStockCalculator idxPvCalc = new AllStocksIndexValueCalculator(LogFactory.makeLogger(), pvCalc);
-        return idxPvCalc.calculate(null, repository);
+        return idxPvCalc.calculate(null, context);
     }
 }

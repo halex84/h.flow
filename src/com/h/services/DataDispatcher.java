@@ -16,12 +16,18 @@ import com.h.contexts.DomainContext;
  */
 public class DataDispatcher {
 
-    private static final Logger log = LogFactory.makeLogger();
+    private final Logger log;
+    private final DomainContext context;
+
+    public DataDispatcher(DomainContext context){
+        this.context = context;
+        this.log = LogFactory.makeLogger();
+    }
 
     /**
      * Creates or updates a stock.
      */
-    public static void addOrUpdateTicker(EqStockContract ticker){
+    public void addOrUpdateTicker(EqStockContract ticker){
 
         addOrUpdateTickers(new EqStockContract[]{ticker});
     }
@@ -29,14 +35,13 @@ public class DataDispatcher {
     /**
      * Creates or updates stocks.
      */
-    public static void addOrUpdateTickers(EqStockContract[] tickers){
+    public void addOrUpdateTickers(EqStockContract[] tickers){
 
-        DomainContext repository = EnvironmentContext.getInstance();
         for (EqStockContract ticker : tickers) {
 
             log.append("Ticker update requested: %s.", new String[]{ticker.ticker});
 
-            Stock stock = repository.getOrAddStockByTicker(ticker.ticker, ticker.stockType);
+            Stock stock = context.getOrAddStockByTicker(ticker.ticker, ticker.stockType);
             stock.update(ticker.stockType, ticker.lastDividend, ticker.parValue, ticker.parValueFixedDividendPct);
 
             log.append("Ticker update completed: %s.", new String[]{ticker.ticker});
@@ -46,14 +51,12 @@ public class DataDispatcher {
     /**
      * Creates or updates an equity stock index.
      */
-    public static void addOrUpdateEquityIndex(EqIndexContract index) throws CalculationException {
+    public void addOrUpdateEquityIndex(EqIndexContract index) throws CalculationException {
 
         log.append("Equity index update requested: %s.", new String[]{index.ticker});
 
-        DomainContext repository = EnvironmentContext.getInstance();
-        EqIndex eqIndex = repository.getOrAddEquityIndexByTicker(index.ticker);
-
-        eqIndex.setComponents(repository, index.componentTickers);
+        EqIndex eqIndex = context.getOrAddEquityIndexByTicker(index.ticker);
+        eqIndex.setComponents(context, index.componentTickers);
 
         log.append("Equity index update completed: %s.", new String[]{index.ticker});
     }

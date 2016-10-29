@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 /**
  * Created by halex on 10/23/16.
  */
-class ServiceContractsMapper {
+class ContractsMapper {
 
     /**
      * Builds a trade contract from the command line arguments.

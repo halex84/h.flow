@@ -1,6 +1,7 @@
 package com.h.tests;
 
 import com.h.contexts.CalculationException;
+import com.h.contexts.DomainContext;
 import com.h.contracts.EqIndexContract;
 import com.h.contracts.EqStockContract;
 import com.h.contracts.TradeContract;
@@ -24,25 +25,25 @@ public class CalcDispatcherTest {
     @Test(expected=CalculationException.class)
     public void pvCalcMustFailForUnknownTickers() throws Exception {
 
-        CalcDispatcher.pvCalc("ABCD");
+        calcDispatcher.pvCalc("ABCD");
     }
 
     @Test(expected=CalculationException.class)
     public void peCalcMustFailForUnknownTickers() throws Exception {
 
-        CalcDispatcher.peCalc("ABCD");
+        calcDispatcher.peCalc("ABCD");
     }
 
     @Test(expected=CalculationException.class)
     public void dividendYieldCalcMustFailForUnknownTickers() throws Exception {
 
-        CalcDispatcher.dividendYieldCalc("ABCD");
+        calcDispatcher.dividendYieldCalc("ABCD");
     }
 
     @Test(expected=CalculationException.class)
     public void calcIndexMustFailForUnknownIndexTickers() throws Exception {
 
-        CalcDispatcher.calcIndex("I");
+        calcDispatcher.calcIndex("I");
     }
 
     @Test
@@ -50,11 +51,11 @@ public class CalcDispatcherTest {
 
         addIndexAndComponents();
 
-        assertEquals(0, CalcDispatcher.pvCalc("ABCD").doubleValue(), 0);
-        assertEquals(0, CalcDispatcher.pvCalc("BCDE").doubleValue(), 0);
-        assertEquals(0, CalcDispatcher.pvCalc("CDEF").doubleValue(), 0);
-        assertEquals(0, CalcDispatcher.pvCalc("VWXY").doubleValue(), 0);
-        assertEquals(0, CalcDispatcher.pvCalc("WXYZ").doubleValue(), 0);
+        assertEquals(0, calcDispatcher.pvCalc("ABCD").doubleValue(), 0);
+        assertEquals(0, calcDispatcher.pvCalc("BCDE").doubleValue(), 0);
+        assertEquals(0, calcDispatcher.pvCalc("CDEF").doubleValue(), 0);
+        assertEquals(0, calcDispatcher.pvCalc("VWXY").doubleValue(), 0);
+        assertEquals(0, calcDispatcher.pvCalc("WXYZ").doubleValue(), 0);
     }
 
     @Test
@@ -62,11 +63,11 @@ public class CalcDispatcherTest {
 
         addIndexAndComponents();
 
-        assertEquals(0, CalcDispatcher.peCalc("ABCD").doubleValue(), 0);
-        assertEquals(0, CalcDispatcher.peCalc("BCDE").doubleValue(), 0);
-        assertEquals(0, CalcDispatcher.peCalc("CDEF").doubleValue(), 0);
-        assertEquals(0, CalcDispatcher.peCalc("VWXY").doubleValue(), 0);
-        assertEquals(0, CalcDispatcher.peCalc("WXYZ").doubleValue(), 0);
+        assertEquals(0, calcDispatcher.peCalc("ABCD").doubleValue(), 0);
+        assertEquals(0, calcDispatcher.peCalc("BCDE").doubleValue(), 0);
+        assertEquals(0, calcDispatcher.peCalc("CDEF").doubleValue(), 0);
+        assertEquals(0, calcDispatcher.peCalc("VWXY").doubleValue(), 0);
+        assertEquals(0, calcDispatcher.peCalc("WXYZ").doubleValue(), 0);
     }
 
     @Test
@@ -74,32 +75,32 @@ public class CalcDispatcherTest {
 
         addIndexAndComponents();
 
-        assertEquals(0, CalcDispatcher.dividendYieldCalc("ABCD").doubleValue(), 0);
-        assertEquals(0, CalcDispatcher.dividendYieldCalc("BCDE").doubleValue(), 0);
-        assertEquals(0, CalcDispatcher.dividendYieldCalc("CDEF").doubleValue(), 0);
-        assertEquals(0, CalcDispatcher.dividendYieldCalc("VWXY").doubleValue(), 0);
-        assertEquals(0, CalcDispatcher.dividendYieldCalc("WXYZ").doubleValue(), 0);
+        assertEquals(0, calcDispatcher.dividendYieldCalc("ABCD").doubleValue(), 0);
+        assertEquals(0, calcDispatcher.dividendYieldCalc("BCDE").doubleValue(), 0);
+        assertEquals(0, calcDispatcher.dividendYieldCalc("CDEF").doubleValue(), 0);
+        assertEquals(0, calcDispatcher.dividendYieldCalc("VWXY").doubleValue(), 0);
+        assertEquals(0, calcDispatcher.dividendYieldCalc("WXYZ").doubleValue(), 0);
     }
 
     @Test
     public void calcIndexMustReturnZeroForIndexTickerWithNoComponents() throws Exception {
 
         addIndex();
-        assertEquals(0, CalcDispatcher.calcIndex("I").doubleValue(), 0);
+        assertEquals(0, calcDispatcher.calcIndex("I").doubleValue(), 0);
     }
 
     @Test
     public void calcIndexMustReturnZeroForIndexTickerWithNoTrades() throws Exception {
 
         addIndexAndComponents();
-        assertEquals(0, CalcDispatcher.calcIndex("I").doubleValue(), 0);
+        assertEquals(0, calcDispatcher.calcIndex("I").doubleValue(), 0);
     }
 
     @Test
     public void calcIndexAllStocksMustReturnZeroWhenThereAreNoTrades() throws Exception {
 
         addIndexAndComponents();
-        assertEquals(0, CalcDispatcher.calcIndexAllStocks().doubleValue(), 0);
+        assertEquals(0, calcDispatcher.calcIndexAllStocks().doubleValue(), 0);
     }
 
     @Test
@@ -108,11 +109,11 @@ public class CalcDispatcherTest {
         addIndexAndComponents();
         addIndexComponentTrades();
 
-        assertEquals(31.145454545454548, CalcDispatcher.pvCalc("ABCD").doubleValue(), 0);
-        assertEquals(15, CalcDispatcher.pvCalc("BCDE").doubleValue(), 0);
-        assertEquals(112.5, CalcDispatcher.pvCalc("CDEF").doubleValue(), 0);
-        assertEquals(30, CalcDispatcher.pvCalc("VWXY").doubleValue(), 0);
-        assertEquals(3000, CalcDispatcher.pvCalc("WXYZ").doubleValue(), 0);
+        assertEquals(31.145454545454548, calcDispatcher.pvCalc("ABCD").doubleValue(), 0);
+        assertEquals(15, calcDispatcher.pvCalc("BCDE").doubleValue(), 0);
+        assertEquals(112.5, calcDispatcher.pvCalc("CDEF").doubleValue(), 0);
+        assertEquals(30, calcDispatcher.pvCalc("VWXY").doubleValue(), 0);
+        assertEquals(3000, calcDispatcher.pvCalc("WXYZ").doubleValue(), 0);
     }
 
     @Test
@@ -121,11 +122,11 @@ public class CalcDispatcherTest {
         addIndexAndComponents();
         addIndexComponentTrades();
 
-        assertEquals(155.7272727272727430, CalcDispatcher.peCalc("ABCD").doubleValue(), 0);//31.14÷0.2
-        assertEquals(150, CalcDispatcher.peCalc("BCDE").doubleValue(), 0);//15÷0.1
-        assertEquals(0, CalcDispatcher.peCalc("CDEF").doubleValue(), 0);//112.5÷0
-        assertEquals(600, CalcDispatcher.peCalc("VWXY").doubleValue(), 0);//30÷0.05
-        assertEquals(600, CalcDispatcher.peCalc("WXYZ").doubleValue(), 0);//3000÷5
+        assertEquals(155.7272727272727430, calcDispatcher.peCalc("ABCD").doubleValue(), 0);//31.14÷0.2
+        assertEquals(150, calcDispatcher.peCalc("BCDE").doubleValue(), 0);//15÷0.1
+        assertEquals(0, calcDispatcher.peCalc("CDEF").doubleValue(), 0);//112.5÷0
+        assertEquals(600, calcDispatcher.peCalc("VWXY").doubleValue(), 0);//30÷0.05
+        assertEquals(600, calcDispatcher.peCalc("WXYZ").doubleValue(), 0);//3000÷5
     }
 
     @Test
@@ -134,11 +135,11 @@ public class CalcDispatcherTest {
         addIndexAndComponents();
         addIndexComponentTrades();
 
-        assertEquals(0.0064214827787507, CalcDispatcher.dividendYieldCalc("ABCD").doubleValue(), 0);//(31.14÷0.2)^-1
-        assertEquals(0.0066666666666667, CalcDispatcher.dividendYieldCalc("BCDE").doubleValue(), 0);//(15÷0.1)^-1
-        assertEquals(0, CalcDispatcher.dividendYieldCalc("CDEF").doubleValue(), 0);//(112.5÷0)^-1
-        assertEquals(0.0016666666666667, CalcDispatcher.dividendYieldCalc("VWXY").doubleValue(), 0);//(30÷0.05)^-1
-        assertEquals(0.0016666666666667, CalcDispatcher.dividendYieldCalc("WXYZ").doubleValue(), 0);//(3000÷5)^-1
+        assertEquals(0.0064214827787507, calcDispatcher.dividendYieldCalc("ABCD").doubleValue(), 0);//(31.14÷0.2)^-1
+        assertEquals(0.0066666666666667, calcDispatcher.dividendYieldCalc("BCDE").doubleValue(), 0);//(15÷0.1)^-1
+        assertEquals(0, calcDispatcher.dividendYieldCalc("CDEF").doubleValue(), 0);//(112.5÷0)^-1
+        assertEquals(0.0016666666666667, calcDispatcher.dividendYieldCalc("VWXY").doubleValue(), 0);//(30÷0.05)^-1
+        assertEquals(0.0016666666666667, calcDispatcher.dividendYieldCalc("WXYZ").doubleValue(), 0);//(3000÷5)^-1
     }
 
     @Test
@@ -148,7 +149,7 @@ public class CalcDispatcherTest {
         addIndexComponentTrades();
 
         //(31.145454545454548*15*30*3000)^(1/4)
-        assertEquals(80.52525531774512, CalcDispatcher.calcIndex("I").doubleValue(), 0);
+        assertEquals(80.52525531774512, calcDispatcher.calcIndex("I").doubleValue(), 0);
     }
 
     @Test
@@ -158,46 +159,65 @@ public class CalcDispatcherTest {
         addIndexComponentTrades();
 
         //(31.145454545454548*15*30*3000*112.5)^(1/5)
-        assertEquals(86.09465555973358, CalcDispatcher.calcIndexAllStocks().doubleValue(), 0);
+        assertEquals(86.09465555973358, calcDispatcher.calcIndexAllStocks().doubleValue(), 0);
     }
 
     private void addIndex() throws CalculationException {
 
         EqIndexContract eqIdx = new EqIndexContract("I", new String[]{});
-        DataDispatcher.addOrUpdateEquityIndex(eqIdx);
+        dataDispatcher.addOrUpdateEquityIndex(eqIdx);
     }
 
     private void addIndexAndComponents() throws CalculationException {
 
-        DataDispatcher.addOrUpdateTicker(new EqStockContract("ABCD", 20));
-        DataDispatcher.addOrUpdateTicker(new EqStockContract("BCDE", 10));
-        DataDispatcher.addOrUpdateTicker(new EqStockContract("CDEF", 0));
-        DataDispatcher.addOrUpdateTicker(new EqStockContract("VWXY", 1, 5));
-        DataDispatcher.addOrUpdateTicker(new EqStockContract("WXYZ", 100, 5));
+        dataDispatcher.addOrUpdateTicker(new EqStockContract("ABCD", 20));
+        dataDispatcher.addOrUpdateTicker(new EqStockContract("BCDE", 10));
+        dataDispatcher.addOrUpdateTicker(new EqStockContract("CDEF", 0));
+        dataDispatcher.addOrUpdateTicker(new EqStockContract("VWXY", 1, 5));
+        dataDispatcher.addOrUpdateTicker(new EqStockContract("WXYZ", 100, 5));
 
         EqIndexContract eqIdx = new EqIndexContract("I", new String[]{ "ABCD", "BCDE", "VWXY", "WXYZ" });
-        DataDispatcher.addOrUpdateEquityIndex(eqIdx);
+        dataDispatcher.addOrUpdateEquityIndex(eqIdx);
     }
 
     private void addIndexComponentTrades() throws CalculationException {
 
-        TradeDispatcher.bookTrade(new TradeContract("eq", BuySell.buy, "ABCD", 2000, BigDecimal.valueOf(20)));
-        TradeDispatcher.bookTrade(new TradeContract("eq", BuySell.buy, "ABCD", 100, BigDecimal.valueOf(19)));
-        TradeDispatcher.bookTrade(new TradeContract("eq", BuySell.buy, "ABCD", 200, BigDecimal.valueOf(22)));
-        TradeDispatcher.bookTrade(new TradeContract("eq", BuySell.buy, "ABCD", 200, BigDecimal.valueOf(25)));
-        TradeDispatcher.bookTrade(new TradeContract("eq", BuySell.sell, "ABCD", 3000, BigDecimal.valueOf(40)));
-        TradeDispatcher.bookTrade(new TradeContract("eq", BuySell.buy, "BCDE", 2000, BigDecimal.valueOf(10)));
-        TradeDispatcher.bookTrade(new TradeContract("eq", BuySell.sell, "BCDE", 2000, BigDecimal.valueOf(20)));
-        TradeDispatcher.bookTrade(new TradeContract("eq", BuySell.buy, "CDEF", 2000, BigDecimal.valueOf(75)));
-        TradeDispatcher.bookTrade(new TradeContract("eq", BuySell.sell, "CDEF", 2000, BigDecimal.valueOf(150)));
-        TradeDispatcher.bookTrade(new TradeContract("eq", BuySell.buy, "VWXY", 2000, BigDecimal.valueOf(20)));
-        TradeDispatcher.bookTrade(new TradeContract("eq", BuySell.sell, "VWXY", 2000, BigDecimal.valueOf(40)));
-        TradeDispatcher.bookTrade(new TradeContract("eq", BuySell.buy, "WXYZ", 20, BigDecimal.valueOf(1999)));
-        TradeDispatcher.bookTrade(new TradeContract("eq", BuySell.sell, "WXYZ", 20, BigDecimal.valueOf(4001)));
+        tradeDispatcher.bookTrade(new TradeContract("eq", BuySell.buy, "ABCD", 2000, BigDecimal.valueOf(20)));
+        tradeDispatcher.bookTrade(new TradeContract("eq", BuySell.buy, "ABCD", 100, BigDecimal.valueOf(19)));
+        tradeDispatcher.bookTrade(new TradeContract("eq", BuySell.buy, "ABCD", 200, BigDecimal.valueOf(22)));
+        tradeDispatcher.bookTrade(new TradeContract("eq", BuySell.buy, "ABCD", 200, BigDecimal.valueOf(25)));
+        tradeDispatcher.bookTrade(new TradeContract("eq", BuySell.sell, "ABCD", 3000, BigDecimal.valueOf(40)));
+        tradeDispatcher.bookTrade(new TradeContract("eq", BuySell.buy, "BCDE", 2000, BigDecimal.valueOf(10)));
+        tradeDispatcher.bookTrade(new TradeContract("eq", BuySell.sell, "BCDE", 2000, BigDecimal.valueOf(20)));
+        tradeDispatcher.bookTrade(new TradeContract("eq", BuySell.buy, "CDEF", 2000, BigDecimal.valueOf(75)));
+        tradeDispatcher.bookTrade(new TradeContract("eq", BuySell.sell, "CDEF", 2000, BigDecimal.valueOf(150)));
+        tradeDispatcher.bookTrade(new TradeContract("eq", BuySell.buy, "VWXY", 2000, BigDecimal.valueOf(20)));
+        tradeDispatcher.bookTrade(new TradeContract("eq", BuySell.sell, "VWXY", 2000, BigDecimal.valueOf(40)));
+        tradeDispatcher.bookTrade(new TradeContract("eq", BuySell.buy, "WXYZ", 20, BigDecimal.valueOf(1999)));
+        tradeDispatcher.bookTrade(new TradeContract("eq", BuySell.sell, "WXYZ", 20, BigDecimal.valueOf(4001)));
     }
 
+    private TradeDispatcher tradeDispatcher;
+    private DataDispatcher dataDispatcher;
+    private CalcDispatcher calcDispatcher;
+    
+    public CalcDispatcherTest(){
+
+        DomainContext environment = EnvironmentContext.getInstance();
+        tradeDispatcher = new TradeDispatcher(environment);
+        dataDispatcher = new DataDispatcher(environment);
+        calcDispatcher = new CalcDispatcher(environment);
+    }
+    
     @After
     public void afterTest(){
-        EnvironmentContext.getInstance().housekeep();
+        
+        DomainContext environment = EnvironmentContext.getInstance();
+        
+        environment.housekeep();
+        
+        tradeDispatcher = new TradeDispatcher(environment);
+        dataDispatcher = new DataDispatcher(environment);
+        calcDispatcher = new CalcDispatcher(environment);
     }
 }

@@ -2,6 +2,8 @@ package com.h.services;
 
 import com.h.contexts.CalculationException;
 import com.h.contracts.TradeContract;
+import com.h.logging.LogFactory;
+import com.h.logging.Logger;
 import com.h.mkt.data.Desk;
 import com.h.contexts.EnvironmentContext;
 import com.h.contexts.DomainContext;
@@ -12,19 +14,24 @@ import com.h.contexts.DomainContext;
  */
 public class TradeDispatcher {
 
+    private final DomainContext context;
+
+    public TradeDispatcher(DomainContext context){
+        this.context = context;
+    }
+
     /**
      * Books a trade.
      */
-    public static void bookTrade(TradeContract trade) throws CalculationException {
+    public void bookTrade(TradeContract trade) throws CalculationException {
 
-        DomainContext repository = EnvironmentContext.getInstance();
-        Desk tradeDesk = repository.getOrAddDeskById(trade.deskId);
+        Desk tradeDesk = context.getOrAddDeskById(trade.deskId);
         switch (trade.buySell){
             case buy:
-                tradeDesk.buy(repository, trade.ticker, trade.qty, trade.price);
+                tradeDesk.buy(context, trade.ticker, trade.qty, trade.price);
                 break;
             case sell:
-                tradeDesk.sell(repository, trade.ticker, trade.qty, trade.price);
+                tradeDesk.sell(context, trade.ticker, trade.qty, trade.price);
                 break;
         }
     }

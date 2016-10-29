@@ -27,6 +27,8 @@ public class TradeDispatcherTest {
     @Test(expected=CalculationException.class)
     public void bookTradeMustFailOnMissingTickers() throws Exception {
 
+        DomainContext context = EnvironmentContext.getInstance();
+        TradeDispatcher tradeDispatcher = new TradeDispatcher(context);
         //prepare.
         TradeContract[] trades = new TradeContract[]{
 
@@ -40,18 +42,22 @@ public class TradeDispatcherTest {
 
         //act.
         for (TradeContract trade : trades) {
-            TradeDispatcher.bookTrade(trade);
+            tradeDispatcher.bookTrade(trade);
         }
     }
 
     @Test
     public void bookTrade() throws Exception {
 
+        DomainContext context = EnvironmentContext.getInstance();
+        DataDispatcher dataDispatcher = new DataDispatcher(context);
+        TradeDispatcher tradeDispatcher = new TradeDispatcher(context);
+
         //prepare.
-        DataDispatcher.addOrUpdateTicker(new EqStockContract("DB", 0));
-        DataDispatcher.addOrUpdateTicker(new EqStockContract("AAPL", 57));
-        DataDispatcher.addOrUpdateTicker(new EqStockContract("BCS", 5.2968));
-        DataDispatcher.addOrUpdateTicker(new EqStockContract("JPM", 48));
+        dataDispatcher.addOrUpdateTicker(new EqStockContract("DB", 0));
+        dataDispatcher.addOrUpdateTicker(new EqStockContract("AAPL", 57));
+        dataDispatcher.addOrUpdateTicker(new EqStockContract("BCS", 5.2968));
+        dataDispatcher.addOrUpdateTicker(new EqStockContract("JPM", 48));
         TradeContract[] trades = new TradeContract[]{
 
                 new TradeContract("eq", BuySell.buy, "DB", 5000, BigDecimal.valueOf(13.33)),
@@ -64,21 +70,19 @@ public class TradeDispatcherTest {
 
         //act.
         for (TradeContract trade : trades) {
-            TradeDispatcher.bookTrade(trade);
+            tradeDispatcher.bookTrade(trade);
         }
 
         //verify.
-        DomainContext repository = EnvironmentContext.getInstance();
-
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());
         cal.add(Calendar.MINUTE, -15);
         Date timestamp = cal.getTime();
 
-        List<EqTrade> bcsTrades = repository.getEquityTradesByTickerAfter("BCS", timestamp);
-        List<EqTrade> jpmTrades = repository.getEquityTradesByTickerAfter("JPM", timestamp);
-        List<EqTrade> aaplTrades = repository.getEquityTradesByTickerAfter("AAPL", timestamp);
-        List<EqTrade> dbTrades = repository.getEquityTradesByTickerAfter("DB", timestamp);
+        List<EqTrade> bcsTrades = context.getEquityTradesByTickerAfter("BCS", timestamp);
+        List<EqTrade> jpmTrades = context.getEquityTradesByTickerAfter("JPM", timestamp);
+        List<EqTrade> aaplTrades = context.getEquityTradesByTickerAfter("AAPL", timestamp);
+        List<EqTrade> dbTrades = context.getEquityTradesByTickerAfter("DB", timestamp);
 
         assertNotNull(bcsTrades);
         assertEquals(2, bcsTrades.size());
