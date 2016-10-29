@@ -26,10 +26,12 @@ public class TradeContract {
         this.price = price;
     }
 
-    public final String deskId;
-    public final BuySell buySell;
-    public final String ticker;
-    public final int qty;
-    public final BigDecimal price;
-    public final Date timestamp;
+    public TradeContract() { }
+
+    public String deskId;
+    public BuySell buySell;
+    public String ticker;
+    public int qty;
+    public BigDecimal price;
+    public Date timestamp;
 }

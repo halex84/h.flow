@@ -1,5 +1,6 @@
 package com.h.tests;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.h.contexts.CalculationException;
 import com.h.contracts.EqStockContract;
 import com.h.contracts.TradeContract;
@@ -11,6 +12,9 @@ import com.h.services.DataDispatcher;
 import com.h.services.TradeDispatcher;
 import org.junit.After;
 import org.junit.Test;
+
+import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;

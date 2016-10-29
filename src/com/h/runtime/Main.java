@@ -16,8 +16,8 @@ class Main {
 
     public static void main(String[] args) throws IOException {
 
-        System.out.print("ServerProcess pending."); //ToDo networking.
-        System.out.print("Command line version. For help type h.");
+        //ToDo networking.
+        System.out.print("ServerProcess pending. Running from the command line.");
 
         //cached calculation values don't always have to be accessible by code which knows
         //or wants to recalculate them. read-only accessors of current values have inner domain use.
