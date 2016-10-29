@@ -1,12 +1,12 @@
 package com.h.services;
 
-import com.h.contracts.CalculationException;
+import com.h.contexts.CalculationException;
 import com.h.logging.LogFactory;
 import com.h.mkt.calc.*;
 import com.h.mkt.data.EqIndex;
 import com.h.mkt.data.Stock;
-import com.h.repositories.InMemoryTradeRepository;
-import com.h.repositories.SimpleStockTradingRepository;
+import com.h.contexts.EnvironmentContext;
+import com.h.contexts.DomainContext;
 import java.math.BigDecimal;
 
 /**
@@ -20,7 +20,7 @@ public class CalcDispatcher {
     public static BigDecimal pvCalc(String ticker) throws CalculationException {
 
         SimpleStockCalculator pvCalc = new PvCalculator(LogFactory.makeLogger());
-        SimpleStockTradingRepository repository = InMemoryTradeRepository.getInstance();
+        DomainContext repository = EnvironmentContext.getInstance();
         Stock stock = repository.getStockByTicker(ticker);
         if (stock == null){
             throw new CalculationException("unknown ticker");
@@ -32,7 +32,7 @@ public class CalcDispatcher {
 
         SimpleStockCalculator pvCalc = new PvCalculator(LogFactory.makeLogger());
         SimpleStockCalculator peCalc = new PeCalculator(LogFactory.makeLogger(), pvCalc);
-        SimpleStockTradingRepository repository = InMemoryTradeRepository.getInstance();
+        DomainContext repository = EnvironmentContext.getInstance();
         Stock stock = repository.getStockByTicker(ticker);
         if (stock == null){
             throw new CalculationException("unknown ticker");
@@ -44,7 +44,7 @@ public class CalcDispatcher {
 
         SimpleStockCalculator pvCalc = new PvCalculator(LogFactory.makeLogger());
         SimpleStockCalculator dyCalc = new DividendYieldCalculator(LogFactory.makeLogger(), pvCalc);
-        SimpleStockTradingRepository repository = InMemoryTradeRepository.getInstance();
+        DomainContext repository = EnvironmentContext.getInstance();
         Stock stock = repository.getStockByTicker(ticker);
         if (stock == null){
             throw new CalculationException("unknown ticker");
@@ -58,7 +58,7 @@ public class CalcDispatcher {
     public static BigDecimal calcIndex(String ticker) throws CalculationException {
 
         SimpleStockCalculator pvCalc = new PvCalculator(LogFactory.makeLogger());
-        SimpleStockTradingRepository repository = InMemoryTradeRepository.getInstance();
+        DomainContext repository = EnvironmentContext.getInstance();
         SimpleStockCalculator idxPvCalc = new EqIndexValueCalculator(LogFactory.makeLogger(), pvCalc);
         EqIndex index = repository.getEquityIndexByTicker(ticker);
         if (index == null){
@@ -70,7 +70,7 @@ public class CalcDispatcher {
     public static BigDecimal calcIndexAllStocks() throws CalculationException {
 
         SimpleStockCalculator pvCalc = new PvCalculator(LogFactory.makeLogger());
-        SimpleStockTradingRepository repository = InMemoryTradeRepository.getInstance();
+        DomainContext repository = EnvironmentContext.getInstance();
         SimpleStockCalculator idxPvCalc = new AllStocksIndexValueCalculator(LogFactory.makeLogger(), pvCalc);
         return idxPvCalc.calculate(null, repository);
     }

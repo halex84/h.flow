@@ -1,14 +1,14 @@
 package com.h.tests;
 
-import com.h.contracts.CalculationException;
+import com.h.contexts.CalculationException;
 import com.h.contracts.EqIndexContract;
 import com.h.contracts.EqStockContract;
 import com.h.mkt.data.EqIndex;
 import com.h.mkt.data.Stock;
 import com.h.mkt.data.StockType;
-import com.h.repositories.InMemoryTradeRepository;
+import com.h.contexts.EnvironmentContext;
 import com.h.services.DataDispatcher;
-import com.h.repositories.SimpleStockTradingRepository;
+import com.h.contexts.DomainContext;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
@@ -45,7 +45,7 @@ public class DataDispatcherTest {
 
         //verify.
         //all tickers must be accessible via the repository, and have expected state.
-        SimpleStockTradingRepository repository = InMemoryTradeRepository.getInstance();
+        DomainContext repository = EnvironmentContext.getInstance();
 
         List<Stock> stocks = repository.getStocks();
 
@@ -106,7 +106,7 @@ public class DataDispatcherTest {
         DataDispatcher.addOrUpdateEquityIndex(eqIdx);
         //verify.
         //all tickers must be in the repository, and have expected state.
-        SimpleStockTradingRepository repository = InMemoryTradeRepository.getInstance();
+        DomainContext repository = EnvironmentContext.getInstance();
         Stock jpm = repository.getStockByTicker("JPM");
         Stock c = repository.getStockByTicker("C");
         //index must be in the repository and contain the assigned components.
@@ -128,6 +128,6 @@ public class DataDispatcherTest {
 
     @After
     public void afterTest(){
-        InMemoryTradeRepository.getInstance().housekeep();
+        EnvironmentContext.getInstance().housekeep();
     }
 }

@@ -1,9 +1,9 @@
 package com.h.mkt.calc;
 
-import com.h.contracts.CalculationException;
+import com.h.contexts.CalculationException;
 import com.h.logging.Logger;
 import com.h.mkt.data.Stock;
-import com.h.repositories.SimpleStockTradingRepository;
+import com.h.contexts.DomainContext;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
@@ -22,7 +22,7 @@ public class PeCalculator implements SimpleStockCalculator {
     }
 
     @Override
-    public BigDecimal calculate(String ticker, SimpleStockTradingRepository repository) throws CalculationException {
+    public BigDecimal calculate(String ticker, DomainContext repository) throws CalculationException {
 
         log.append("Calculating PE of %s.", new Object[]{ticker});
 

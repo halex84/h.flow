@@ -1,9 +1,9 @@
 package com.h.mkt.data;
 
-import com.h.contracts.CalculationException;
+import com.h.contexts.CalculationException;
 import com.h.logging.Logger;
 import com.h.mkt.SimpleStockTradingDesk;
-import com.h.repositories.SimpleStockTradingRepository;
+import com.h.contexts.DomainContext;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -27,16 +27,16 @@ public class Desk implements SimpleStockTradingDesk {
     private final ArrayList<EqTrade> trades;
 
     @Override
-    public void buy(SimpleStockTradingRepository repository, String ticker, int qty, BigDecimal price) throws CalculationException {
-        bookEqTrade(repository, ticker, qty, price, BuySell.buy);
+    public void buy(DomainContext context, String ticker, int qty, BigDecimal price) throws CalculationException {
+        bookEqTrade(context, ticker, qty, price, BuySell.buy);
     }
 
     @Override
-    public void sell(SimpleStockTradingRepository repository, String ticker, int qty, BigDecimal price) throws CalculationException {
-        bookEqTrade(repository, ticker, qty, price, BuySell.sell);
+    public void sell(DomainContext context, String ticker, int qty, BigDecimal price) throws CalculationException {
+        bookEqTrade(context, ticker, qty, price, BuySell.sell);
     }
 
-    private void bookEqTrade(SimpleStockTradingRepository repository, String ticker, int qty, BigDecimal price, BuySell buySell) throws CalculationException {
+    private void bookEqTrade(DomainContext context, String ticker, int qty, BigDecimal price, BuySell buySell) throws CalculationException {
 
         log.append("%s booking a trade: ticker=%s, qty=%s, price=%s, buySell=%s.",
                 new Object[]{deskId, ticker, qty, price, buySell});
@@ -44,7 +44,7 @@ public class Desk implements SimpleStockTradingDesk {
         EqTrade trade = new EqTrade(deskId, ticker, qty, buySell, price);
 
         try {
-            repository.addEqTrade(trade);
+            context.addEqTrade(trade);
         }
         catch (Exception e){
 

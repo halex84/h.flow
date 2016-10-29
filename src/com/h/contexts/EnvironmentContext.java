@@ -1,6 +1,5 @@
-package com.h.repositories;
+package com.h.contexts;
 
-import com.h.contracts.CalculationException;
 import com.h.logging.LogFactory;
 import com.h.logging.Logger;
 import com.h.mkt.data.*;
@@ -13,16 +12,16 @@ import java.util.stream.Collectors;
 /**
  * Created by halex on 10/22/16.
  */
-public class InMemoryTradeRepository implements SimpleStockTradingRepository {
+public class EnvironmentContext implements DomainContext {
 
     private final static ReentrantLock instanceLock = new ReentrantLock();
-    private static SimpleStockTradingRepository instance;
-    public static SimpleStockTradingRepository getInstance(){
+    private static DomainContext instance;
+    public static DomainContext getInstance(){
 
         instanceLock.lock();
         try{
             if (instance == null){
-                instance = new InMemoryTradeRepository(LogFactory.makeLogger());
+                instance = new EnvironmentContext(LogFactory.makeLogger());
             }
             return instance;
         }
@@ -42,7 +41,7 @@ public class InMemoryTradeRepository implements SimpleStockTradingRepository {
 
     private final Logger log;
 
-    private InMemoryTradeRepository(Logger logger){
+    private EnvironmentContext(Logger logger){
         log = logger;
     }
 

@@ -1,9 +1,9 @@
 package com.h.mkt.data;
 
-import com.h.contracts.CalculationException;
+import com.h.contexts.CalculationException;
 import com.h.logging.Logger;
 import com.h.mkt.calc.SimpleStockCalculator;
-import com.h.repositories.SimpleStockTradingRepository;
+import com.h.contexts.DomainContext;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +44,7 @@ public class EqIndex {
         return stocks;
     }
 
-    public void setComponents(SimpleStockTradingRepository repository, String[] componentTickers) throws CalculationException {
+    public void setComponents(DomainContext repository, String[] componentTickers) throws CalculationException {
 
         ArrayList<Stock> components = new ArrayList<>();
         for (String st : componentTickers){
@@ -109,7 +109,7 @@ public class EqIndex {
         log.append("Invalidated index value: %s.", new String[]{ticker});
     }
 
-    public BigDecimal getCurrentValue(SimpleStockTradingRepository repository, SimpleStockCalculator indexPvCalculator) throws CalculationException {
+    public BigDecimal getCurrentValue(DomainContext repository, SimpleStockCalculator indexPvCalculator) throws CalculationException {
 
         if (isPvValid) {
             return pv;

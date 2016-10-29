@@ -1,11 +1,11 @@
 package com.h.tests;
 
-import com.h.contracts.CalculationException;
+import com.h.contexts.CalculationException;
 import com.h.contracts.EqIndexContract;
 import com.h.contracts.EqStockContract;
 import com.h.contracts.TradeContract;
 import com.h.mkt.data.BuySell;
-import com.h.repositories.InMemoryTradeRepository;
+import com.h.contexts.EnvironmentContext;
 import com.h.services.CalcDispatcher;
 import com.h.services.DataDispatcher;
 import com.h.services.TradeDispatcher;
@@ -198,6 +198,6 @@ public class CalcDispatcherTest {
 
     @After
     public void afterTest(){
-        InMemoryTradeRepository.getInstance().housekeep();
+        EnvironmentContext.getInstance().housekeep();
     }
 }

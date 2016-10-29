@@ -1,9 +1,9 @@
 package com.h.mkt.calc;
 
-import com.h.contracts.CalculationException;
+import com.h.contexts.CalculationException;
 import com.h.logging.Logger;
 import com.h.mkt.data.Stock;
-import com.h.repositories.SimpleStockTradingRepository;
+import com.h.contexts.DomainContext;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -22,7 +22,7 @@ abstract class IndexValueCalculator implements SimpleStockCalculator {
         stockPvCalculator = stockPvCalc;
     }
 
-    BigDecimal calculate(List<Stock> components, SimpleStockTradingRepository repository) throws CalculationException {
+    BigDecimal calculate(List<Stock> components, DomainContext repository) throws CalculationException {
 
         if (components == null || components.size() == 0){
             return BigDecimal.ZERO;

@@ -1,12 +1,12 @@
 package com.h.tests;
 
-import com.h.contracts.CalculationException;
+import com.h.contexts.CalculationException;
 import com.h.contracts.EqStockContract;
 import com.h.contracts.TradeContract;
 import com.h.mkt.data.BuySell;
 import com.h.mkt.data.EqTrade;
-import com.h.repositories.InMemoryTradeRepository;
-import com.h.repositories.SimpleStockTradingRepository;
+import com.h.contexts.EnvironmentContext;
+import com.h.contexts.DomainContext;
 import com.h.services.DataDispatcher;
 import com.h.services.TradeDispatcher;
 import org.junit.After;
@@ -67,8 +67,8 @@ public class TradeDispatcherTest {
             TradeDispatcher.bookTrade(trade);
         }
 
-        //
-        SimpleStockTradingRepository repository = InMemoryTradeRepository.getInstance();
+        //verify.
+        DomainContext repository = EnvironmentContext.getInstance();
 
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());
@@ -112,6 +112,6 @@ public class TradeDispatcherTest {
 
     @After
     public void afterTest(){
-        InMemoryTradeRepository.getInstance().housekeep();
+        EnvironmentContext.getInstance().housekeep();
     }
 }

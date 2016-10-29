@@ -2,7 +2,7 @@ package com.h.mkt.calc;
 
 import com.h.logging.Logger;
 import com.h.mkt.data.EqTrade;
-import com.h.repositories.SimpleStockTradingRepository;
+import com.h.contexts.DomainContext;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Calendar;
@@ -21,7 +21,7 @@ public class PvCalculator implements SimpleStockCalculator {
     }
 
     @Override
-    public BigDecimal calculate(String ticker, SimpleStockTradingRepository repository) {
+    public BigDecimal calculate(String ticker, DomainContext repository) {
 
         log.append("Calculating PV of %s.", new Object[]{ticker});
 

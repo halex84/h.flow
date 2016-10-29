@@ -1,6 +1,6 @@
-package com.h.visualisations;
+package com.h.runtime;
 
-import com.h.contracts.CalculationException;
+import com.h.contexts.CalculationException;
 import com.h.contracts.EqIndexContract;
 import com.h.contracts.EqStockContract;
 import com.h.contracts.TradeContract;
@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 /**
  * Created by halex on 10/23/16.
  */
-class Contracts {
+class ServiceContractsMapper {
 
     /**
      * Builds a trade contract from the command line arguments.

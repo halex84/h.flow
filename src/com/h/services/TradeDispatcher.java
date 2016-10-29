@@ -1,10 +1,10 @@
 package com.h.services;
 
-import com.h.contracts.CalculationException;
+import com.h.contexts.CalculationException;
 import com.h.contracts.TradeContract;
 import com.h.mkt.data.Desk;
-import com.h.repositories.InMemoryTradeRepository;
-import com.h.repositories.SimpleStockTradingRepository;
+import com.h.contexts.EnvironmentContext;
+import com.h.contexts.DomainContext;
 
 /**
  * TradeDispatcher API
@@ -17,7 +17,7 @@ public class TradeDispatcher {
      */
     public static void bookTrade(TradeContract trade) throws CalculationException {
 
-        SimpleStockTradingRepository repository = InMemoryTradeRepository.getInstance();
+        DomainContext repository = EnvironmentContext.getInstance();
         Desk tradeDesk = repository.getOrAddDeskById(trade.deskId);
         switch (trade.buySell){
             case buy:

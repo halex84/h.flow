@@ -1,9 +1,9 @@
 package com.h.mkt.calc;
 
-import com.h.contracts.CalculationException;
+import com.h.contexts.CalculationException;
 import com.h.logging.Logger;
 import com.h.mkt.data.EqIndex;
-import com.h.repositories.SimpleStockTradingRepository;
+import com.h.contexts.DomainContext;
 import java.math.BigDecimal;
 
 /**
@@ -16,7 +16,7 @@ public class EqIndexValueCalculator extends IndexValueCalculator {
     }
 
     @Override
-    public BigDecimal calculate(String ticker, SimpleStockTradingRepository repository) throws CalculationException {
+    public BigDecimal calculate(String ticker, DomainContext repository) throws CalculationException {
 
         log.append("Calculating value of index %s.", new Object[]{ticker});
 

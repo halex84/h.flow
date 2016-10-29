@@ -1,9 +1,9 @@
 package com.h.mkt.data;
 
-import com.h.contracts.CalculationException;
+import com.h.contexts.CalculationException;
 import com.h.logging.Logger;
 import com.h.mkt.calc.SimpleStockCalculator;
-import com.h.repositories.SimpleStockTradingRepository;
+import com.h.contexts.DomainContext;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
@@ -84,7 +84,7 @@ public class Stock {
         log.append("Invalidated ticker calculation results: %s.", new String[]{ticker});
     }
 
-    public BigDecimal getCurrentPv(SimpleStockTradingRepository repository, SimpleStockCalculator calculator) throws CalculationException {
+    public BigDecimal getCurrentPv(DomainContext repository, SimpleStockCalculator calculator) throws CalculationException {
 
         if (isPvValid){
             return pv;
@@ -94,7 +94,7 @@ public class Stock {
         return pv;
     }
 
-    public BigDecimal getCurrentPe(SimpleStockTradingRepository repository, SimpleStockCalculator calculator) throws CalculationException {
+    public BigDecimal getCurrentPe(DomainContext repository, SimpleStockCalculator calculator) throws CalculationException {
 
         if (isPeValid) {
             return pe;
@@ -104,7 +104,7 @@ public class Stock {
         return pe;
     }
 
-    public BigDecimal getCurrentDy(SimpleStockTradingRepository repository, SimpleStockCalculator calculator) throws CalculationException {
+    public BigDecimal getCurrentDy(DomainContext repository, SimpleStockCalculator calculator) throws CalculationException {
 
         if (isDyValid){
             return dy;

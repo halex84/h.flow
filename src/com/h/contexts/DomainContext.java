@@ -1,6 +1,5 @@
-package com.h.repositories;
+package com.h.contexts;
 
-import com.h.contracts.CalculationException;
 import com.h.mkt.data.*;
 import java.util.Date;
 import java.util.List;
@@ -8,7 +7,7 @@ import java.util.List;
 /**
  * Created by halex on 10/22/16.
  */
-public interface SimpleStockTradingRepository {
+public interface DomainContext {
 
     /**
      * Queries for the given desk; if not found creates one.

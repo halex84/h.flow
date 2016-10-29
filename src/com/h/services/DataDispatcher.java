@@ -1,14 +1,14 @@
 package com.h.services;
 
-import com.h.contracts.CalculationException;
+import com.h.contexts.CalculationException;
 import com.h.contracts.EqIndexContract;
 import com.h.contracts.EqStockContract;
 import com.h.logging.LogFactory;
 import com.h.logging.Logger;
 import com.h.mkt.data.EqIndex;
 import com.h.mkt.data.Stock;
-import com.h.repositories.InMemoryTradeRepository;
-import com.h.repositories.SimpleStockTradingRepository;
+import com.h.contexts.EnvironmentContext;
+import com.h.contexts.DomainContext;
 
 /**
  * DataDispatcher API
@@ -31,7 +31,7 @@ public class DataDispatcher {
      */
     public static void addOrUpdateTickers(EqStockContract[] tickers){
 
-        SimpleStockTradingRepository repository = InMemoryTradeRepository.getInstance();
+        DomainContext repository = EnvironmentContext.getInstance();
         for (EqStockContract ticker : tickers) {
 
             log.append("Ticker update requested: %s.", new String[]{ticker.ticker});
@@ -50,7 +50,7 @@ public class DataDispatcher {
 
         log.append("Equity index update requested: %s.", new String[]{index.ticker});
 
-        SimpleStockTradingRepository repository = InMemoryTradeRepository.getInstance();
+        DomainContext repository = EnvironmentContext.getInstance();
         EqIndex eqIndex = repository.getOrAddEquityIndexByTicker(index.ticker);
 
         eqIndex.setComponents(repository, index.componentTickers);

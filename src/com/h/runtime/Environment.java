@@ -1,6 +1,6 @@
-package com.h.visualisations;
+package com.h.runtime;
 
-import com.h.contracts.CalculationException;
+import com.h.contexts.CalculationException;
 import com.h.logging.LogFactory;
 import com.h.logging.Logger;
 import com.h.services.CalcDispatcher;
@@ -56,21 +56,29 @@ public class Environment {
             offset = 1; //this is my favorite line, of course.
         }
 
-        specifics = Arrays.copyOfRange(arguments, offset, arguments.length);
+        if (offset >= arguments.length){
+            specifics = new String[0];
+        }
+        else {
+            specifics = Arrays.copyOfRange(arguments, offset, arguments.length);
+        }
 
-        switch (arguments[1]){
-            case "i":
-                argument1 = 1;
-                break;
-            case "ii":
-                argument1 = 2;
-                break;
-            case "iii":
-                argument1 = 3;
-                break;
-            case "iv":
-                argument1 = 4;
-                break;
+        if (arguments.length >= 2) {
+
+            switch (arguments[1]) {
+                case "i":
+                    argument1 = 1;
+                    break;
+                case "ii":
+                    argument1 = 2;
+                    break;
+                case "iii":
+                    argument1 = 3;
+                    break;
+                case "iv":
+                    argument1 = 4;
+                    break;
+            }
         }
     }
 
@@ -90,7 +98,7 @@ public class Environment {
                         CalcDispatcher.peCalc(specifics[0]);
                         break;
                     case 3:
-                        TradeDispatcher.bookTrade(Contracts.Trade(specifics));
+                        TradeDispatcher.bookTrade(ServiceContractsMapper.Trade(specifics));
                         break;
                     case 4:
                         CalcDispatcher.pvCalc(specifics[0]);
@@ -105,10 +113,10 @@ public class Environment {
             case s: {
                 switch (argument1){
                     case 1:
-                        DataDispatcher.addOrUpdateTicker(Contracts.Stock(specifics));
+                        DataDispatcher.addOrUpdateTicker(ServiceContractsMapper.Stock(specifics));
                         break;
                     case 2:
-                        DataDispatcher.addOrUpdateEquityIndex(Contracts.Index(specifics));
+                        DataDispatcher.addOrUpdateEquityIndex(ServiceContractsMapper.Index(specifics));
                         break;
                     case 3:
                         CalcDispatcher.calcIndex(specifics[0]);
