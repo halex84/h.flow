@@ -8,14 +8,18 @@ import java.util.Date;
  */
 public class EqTrade {
 
-    public EqTrade(String deskId, String ticker, int qty, BuySell buySell, BigDecimal price) {
-
+    public EqTrade(String deskId, Date timestamp, String ticker, int qty, BuySell buySell, BigDecimal price) {
         this.deskId = deskId;
         this.ticker = ticker;
         this.qty = qty;
         this.buySell = buySell;
         this.price = price;
-        this.timestamp = new Date();
+        if (timestamp != null){
+            this.timestamp = timestamp;
+        }
+        else{
+            this.timestamp = new Date();
+        }
     }
 
     private final String deskId;

@@ -18,11 +18,11 @@ public class OperationContext {
     private final Logger log;
 
     private OperationContext(Logger log, DomainContext context, CalcDispatcher calcDispatcher, DataDispatcher dataDispatcher, TradeDispatcher tradeDispatcher) {
+        this.log = log;
         this.context = context;
         this.calcDispatcher = calcDispatcher;
         this.dataDispatcher = dataDispatcher;
         this.tradeDispatcher = tradeDispatcher;
-        this.log = log;
     }
 
     private OperationParameters args;
@@ -33,6 +33,10 @@ public class OperationContext {
         //ToDo networking.
         //request->ServerProcess->request started.
         //out: calculation events. and messaging. etc.
+        //have separate Server|CommandLine|Network Contexts?
+        //with the CL&N processes dispatching requests to the server?
+        //with separate configs, and injecting the dispatchers?
+        //maybe work with a distributed in-memory context?
         if (!amRunnable){
             System.out.println("No new runnable operation registered.");
             return this;
@@ -40,38 +44,46 @@ public class OperationContext {
 
         try {
 
-            switch (args.argument0) {
-                case a: {
-                    switch (args.argument1) {
-                        case 1:
+            switch (args.operation) {
+                case calc: {
+                    switch (args.calcArgument) {
+                        case dy:
                             calcDispatcher.dividendYieldCalc(args.specifics[0]);
                             break;
-                        case 2:
+                        case pe:
                             calcDispatcher.peCalc(args.specifics[0]);
                             break;
-                        case 3:
-                            tradeDispatcher.bookTrade(ContractsMapper.Trade(args.specifics));
-                            break;
-                        case 4:
+                        case pv:
                             calcDispatcher.pvCalc(args.specifics[0]);
+                            break;
+                        case index:
+                            calcDispatcher.calcIndex(args.specifics[0]);
+                            break;
+                        case indexAll:
+                            calcDispatcher.calcIndexAllStocks();
                             break;
                     }
                 }
                 break;
-                case b: {
-                    calcDispatcher.calcIndexAllStocks();
-                }
-                break;
-                case s: {
-                    switch (args.argument1) {
-                        case 1:
-                            dataDispatcher.addOrUpdateTicker(ContractsMapper.Stock(args.specifics));
+                case load: {
+                    switch (args.loadArgument) {
+                        case stock:
+                            dataDispatcher.addOrUpdateTicker(args.getStock());
                             break;
-                        case 2:
-                            dataDispatcher.addOrUpdateEquityIndex(ContractsMapper.Index(args.specifics));
+                        case stockFile:
+                            dataDispatcher.addOrUpdateTickers(args.getStocksFromFile());
                             break;
-                        case 3:
-                            calcDispatcher.calcIndex(args.specifics[0]);
+                        case eqIndex:
+                            dataDispatcher.addOrUpdateEquityIndex(args.getIndex());
+                            break;
+                        case eqIndexFile:
+                            dataDispatcher.addOrUpdateEquityIndexes(args.getIndexesFromFile());
+                            break;
+                        case trade:
+                            tradeDispatcher.bookTrade(args.getTrade());
+                            break;
+                        case tradeFile:
+                            tradeDispatcher.bookTrades(args.getTradesFromFile());
                             break;
                     }
                 }

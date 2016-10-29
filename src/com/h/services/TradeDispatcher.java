@@ -21,6 +21,16 @@ public class TradeDispatcher {
     }
 
     /**
+     * Books trades.
+     */
+    public void bookTrades(TradeContract[] trades) throws CalculationException {
+
+        for (TradeContract trade : trades){
+            bookTrade(trade);
+        }
+    }
+
+    /**
      * Books a trade.
      */
     public void bookTrade(TradeContract trade) throws CalculationException {

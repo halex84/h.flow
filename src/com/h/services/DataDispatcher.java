@@ -53,11 +53,22 @@ public class DataDispatcher {
      */
     public void addOrUpdateEquityIndex(EqIndexContract index) throws CalculationException {
 
-        log.append("Equity index update requested: %s.", new String[]{index.ticker});
+        addOrUpdateEquityIndexes(new EqIndexContract[]{index});
+    }
 
-        EqIndex eqIndex = context.getOrAddEquityIndexByTicker(index.ticker);
-        eqIndex.setComponents(context, index.componentTickers);
+    /**
+     * Creates or updates equity stock indexes.
+     */
+    public void addOrUpdateEquityIndexes(EqIndexContract[] indexes) throws CalculationException {
 
-        log.append("Equity index update completed: %s.", new String[]{index.ticker});
+        for (EqIndexContract index : indexes) {
+
+            log.append("Equity index update requested: %s.", new String[]{index.ticker});
+
+            EqIndex eqIndex = context.getOrAddEquityIndexByTicker(index.ticker);
+            eqIndex.setComponents(context, index.componentTickers);
+
+            log.append("Equity index update completed: %s.", new String[]{index.ticker});
+        }
     }
 }

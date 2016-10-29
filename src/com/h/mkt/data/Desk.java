@@ -7,6 +7,7 @@ import com.h.contexts.DomainContext;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by halex on 10/22/16.
@@ -41,7 +42,7 @@ public class Desk implements SimpleStockTradingDesk {
         log.append("%s booking a trade: ticker=%s, qty=%s, price=%s, buySell=%s.",
                 new Object[]{deskId, ticker, qty, price, buySell});
 
-        EqTrade trade = new EqTrade(deskId, ticker, qty, buySell, price);
+        EqTrade trade = new EqTrade(deskId, new Date(), ticker, qty, buySell, price);
 
         try {
             context.addEqTrade(trade);
