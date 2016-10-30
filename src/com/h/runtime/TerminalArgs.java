@@ -23,8 +23,9 @@ import java.util.Arrays;
  iii. record a trade, with timestamp, quantity of shares, buy or sell indicator and price
  iv. Calculate Stock Price based on trades recorded in past 15 minutes
  b. Calculate the GBCE All Share Index using the geometric mean of prices for all stocks
+ *
  */
-public class TerminalArguments {
+public class TerminalArgs {
 
     public enum Operation {
         calc,
@@ -65,9 +66,9 @@ public class TerminalArguments {
      * load stockFile pathToFile
      * load trade deskId, (buy|sell), TICKER, qty, price
      * load tradeFile pathToFile
-     * ->Files should contain arrays of JSON serialized contract objects.
+     * ->Files should contain an array of JSON serialized contract instances.
      */
-    public TerminalArguments(String[] arguments) {
+    public TerminalArgs(String[] arguments) {
 
         contractsMapper = new ContractsMapper();
         operation = Operation.valueOf(arguments[0]);
@@ -123,24 +124,26 @@ public class TerminalArguments {
 
         /**
          * Builds a trade contract from the command line arguments.
-         *
-         * @param specifics deskId, (buy|sell), TICKER, qty, price
+         * @param specifics (buy|sell), TICKER, qty, price, [ deskId ]
          * @return trade contract
-         * @throws CalculationException if arguments are invalid.
          */
-        public TradeContract Trade(String[] specifics) throws CalculationException {
+        public TradeContract Trade(String[] specifics)  {
 
             BuySell buySell = BuySell.valueOf(specifics[0]);
             String ticker = specifics[1];
             int qty = Integer.parseInt(specifics[2]);
             BigDecimal price = BigDecimal.valueOf(Double.parseDouble(specifics[3]));
+            if (specifics.length >= 5) {
 
-            return new TradeContract(buySell, ticker, qty, price);
+                return new TradeContract(specifics[4], buySell, ticker, qty, price);
+            } else {
+
+                return new TradeContract(null, buySell, ticker, qty, price);
+            }
         }
 
         /**
          * Builds a stock contract from the command line arguments.
-         *
          * @param specifics: TICKER, common|preferred, { common: lastDividend }, { preferred: parValue, parValueDividendPct }
          * @throws CalculationException if arguments are invalid.
          */
@@ -160,11 +163,9 @@ public class TerminalArguments {
 
         /**
          * Builds an index contract from the command line arguments.
-         *
          * @param specifics: TICKER, ST1,ST2,..,STn (2nd arg: csv without spaces of component tickers)
-         * @throws CalculationException if arguments are invalid.
          */
-        public EqIndexContract Index(String[] specifics) throws CalculationException {
+        public EqIndexContract Index(String[] specifics) {
 
             return new EqIndexContract(specifics[0], specifics[1].split(","));
         }

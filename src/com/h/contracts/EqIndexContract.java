@@ -10,6 +10,8 @@ public class EqIndexContract {
         this.componentTickers = componentTickers;
     }
 
-    public final String ticker;
-    public final String[] componentTickers;
+    public EqIndexContract() { /*JSON*/ }
+
+    public String ticker;
+    public String[] componentTickers;
 }

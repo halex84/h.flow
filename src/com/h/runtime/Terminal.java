@@ -17,10 +17,10 @@ class Terminal {
     public static void main(String[] args) throws IOException {
 
         //ToDo networking.
-        System.out.print("ServerProcess pending. Running from the command line.");
+        System.out.print("ServerProcessImpl pending. Running from the command line.");
 
-        //cached calculation values don't always have to be accessible by code which knows
-        //or wants to recalculate them. read-only accessors of current values have inner domain use.
+        //read-only accessors of current values have inner domain use;
+        //however, here we emphasize the calculation of values.
 
         while(process(getCommandArgsFromConsole()) > 0) { }
 

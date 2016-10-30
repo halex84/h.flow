@@ -17,6 +17,11 @@ public interface DomainContext {
     Desk getOrAddDeskById(String deskId);
 
     /**
+     * Queries by the given id; if not found returns null.
+     */
+    Desk getDeskById(String deskId);
+
+    /**
      * Queries for the given index; if not found creates one.
      * @param ticker the index ticker, eg. ".DJI"
      * @return an up-to-date object

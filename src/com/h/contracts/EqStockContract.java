@@ -23,10 +23,11 @@ public class EqStockContract {
         stockType = StockType.preferred;
     }
 
-    public final String ticker;
-    public final StockType stockType;
+    public EqStockContract() { /*JSON*/ }
+
+    public String ticker;
+    public StockType stockType;
     public double lastDividend;
     public double parValue;
     public double parValueFixedDividendPct;
-
 }

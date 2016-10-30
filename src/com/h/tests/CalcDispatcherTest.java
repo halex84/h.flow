@@ -162,6 +162,19 @@ public class CalcDispatcherTest {
         assertEquals(86.09465555973358, calcDispatcher.calcIndexAllStocks().doubleValue(), 0);
     }
 
+    @Test
+    public void calcPortfolioMargin() throws Exception{
+
+        addIndexAndComponents();
+        addIndexComponentTrades();
+
+        BigDecimal margin = calcDispatcher.calcDeskPortfolioMargin("eq", "$");
+        //ABCD: -500 x  31.145454545454548
+        //other positions net to zero.
+        // -> margin = abs(-500 x 0.1 x 31.145454545454548).
+        assertEquals(1557.27272727272743000, margin.doubleValue(), 0);
+    }
+
     private void addIndex() throws CalculationException {
 
         EqIndexContract eqIdx = new EqIndexContract("I", new String[]{});

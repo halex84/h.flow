@@ -9,16 +9,14 @@ import java.util.Date;
  */
 public class TradeContract {
 
-    public TradeContract(BuySell buySell, String ticker, int qty, BigDecimal price) {
-        this("JPM-P", buySell, ticker, qty, price);
-    }
-
     public TradeContract(String deskId, BuySell buySell, String ticker, int qty, BigDecimal price) {
-        this(deskId, null, buySell, ticker, qty, price);
+        this(deskId, null, null, buySell, ticker, qty, price);
     }
 
-    public TradeContract(String deskId, Date timestamp, BuySell buySell, String ticker, int qty, BigDecimal price) {
+    public TradeContract(String deskId, String portfolioId, Date timestamp, BuySell buySell, String ticker, int qty, BigDecimal price) {
+
         this.deskId = deskId;
+        this.portfolioId = portfolioId;
         this.timestamp = timestamp;
         this.buySell = buySell;
         this.ticker = ticker;
@@ -26,12 +24,38 @@ public class TradeContract {
         this.price = price;
     }
 
-    public TradeContract() { }
+    public TradeContract() { /*JSON*/ }
 
+    /**
+     * Don't read this field value.
+     * Use the getter.
+     */
     public String deskId;
+
+    /**
+     * Don't read this field value.
+     * Use the getter.
+     */
+    public String portfolioId;
     public BuySell buySell;
     public String ticker;
     public int qty;
     public BigDecimal price;
     public Date timestamp;
+
+    public String getDeskId(){
+
+        if(deskId == null || deskId.trim().equals("")){
+            return  "$";
+        }
+        return deskId;
+    }
+
+    public String getPortfolioId(){
+
+        if(portfolioId == null || portfolioId.trim().equals("")){
+            return  "$";
+        }
+        return portfolioId;
+    }
 }

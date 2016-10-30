@@ -1,5 +1,6 @@
 package com.h.events;
 
+import com.h.contexts.DomainContext;
 import com.h.mkt.data.EqIndex;
 import com.h.mkt.data.EqTrade;
 import com.h.mkt.data.Stock;
@@ -11,13 +12,26 @@ import java.util.List;
  */
 public class EqTradeBooked {
 
-    public EqTradeBooked(EqTrade bookedTrade, Stock tradedStock, List<EqIndex> tradedStockOverlayingIndexes) {
+    public EqTradeBooked(DomainContext srcInfo, EqTrade bookedTrade) {
+        this.src = srcInfo;
         this.bookedTrade = bookedTrade;
-        this.tradedStock = tradedStock;
-        this.tradedStockOverlayingIndexes = tradedStockOverlayingIndexes;
     }
 
-    public final EqTrade bookedTrade;
-    public final Stock tradedStock;
-    public final List<EqIndex> tradedStockOverlayingIndexes;
+    private final DomainContext src;
+    private final EqTrade bookedTrade;
+
+    public EqTrade getBookedTrade(){
+
+        return bookedTrade;
+    }
+
+    public Stock getTradedStock() {
+
+        return src.getStockByTicker(bookedTrade.getTicker());
+    }
+
+    public List<EqIndex> getTradedStockOverlayingIndexes(){
+
+        return src.getEquityIndexesByComponent(getTradedStock());
+    }
 }

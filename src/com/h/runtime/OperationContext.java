@@ -25,8 +25,8 @@ public class OperationContext {
         this.tradeDispatcher = tradeDispatcher;
     }
 
-    private TerminalArguments args;
-    private boolean amRunnable = false;
+    private TerminalArgs args;
+    private boolean iAmRunnable = false;
 
     public OperationContext run() {
 
@@ -37,7 +37,7 @@ public class OperationContext {
         //with the CL&N processes dispatching requests to the server?
         //with separate configs, and injecting the dispatchers?
         //maybe work with a distributed in-memory context?
-        if (!amRunnable){
+        if (!iAmRunnable){
             System.out.println("No new runnable operation registered.");
             return this;
         }
@@ -115,8 +115,8 @@ public class OperationContext {
 
         try{
             //remember to print usage and validation for new functionality.
-            oc.args = new TerminalArguments(args);
-            oc.amRunnable = true;
+            oc.args = new TerminalArgs(args);
+            oc.iAmRunnable = true;
         }
         catch (Exception e){ e.printStackTrace(); }
 

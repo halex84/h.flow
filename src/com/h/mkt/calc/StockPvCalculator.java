@@ -12,16 +12,16 @@ import java.util.List;
 /**
  * Created by halex on 10/22/16.
  */
-public class PvCalculator implements SimpleStockCalculator {
+public class StockPvCalculator implements StockCalculator {
 
     private final Logger log;
 
-    public PvCalculator(Logger logger){
+    public StockPvCalculator(Logger logger){
         log = logger;
     }
 
     @Override
-    public BigDecimal calculate(String ticker, DomainContext repository) {
+    public BigDecimal calculate(String ticker, DomainContext context) {
 
         log.append("Calculating PV of %s.", new Object[]{ticker});
 
@@ -30,7 +30,7 @@ public class PvCalculator implements SimpleStockCalculator {
         cal.add(Calendar.MINUTE, -15);
         Date time = cal.getTime();
 
-        List<EqTrade> trades = repository.getEquityTradesByTickerAfter(ticker, time);
+        List<EqTrade> trades = context.getEquityTradesByTickerAfter(ticker, time);
 
         if (trades == null || trades.size() == 0){
             return BigDecimal.ZERO;

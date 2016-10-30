@@ -11,12 +11,12 @@ import java.util.List;
 /**
  * Created by halex on 10/23/16.
  */
-abstract class IndexValueCalculator implements SimpleStockCalculator {
+abstract class IndexValueCalculator implements StockCalculator {
 
     final Logger log;
-    private final SimpleStockCalculator stockPvCalculator;
+    private final StockCalculator stockPvCalculator;
 
-    IndexValueCalculator(Logger logger, SimpleStockCalculator stockPvCalc){
+    IndexValueCalculator(Logger logger, StockCalculator stockPvCalc){
 
         log = logger;
         stockPvCalculator = stockPvCalc;

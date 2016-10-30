@@ -6,7 +6,7 @@ package com.h.contexts;
 public interface EventObserver {
 
     /**
-     * Is the observer able to handle this event type?
+     * Is the observer to handle this event type?
      * @param eventType to check.
      * @return true if yes.
      */

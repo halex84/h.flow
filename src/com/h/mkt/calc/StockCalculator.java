@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 /**
  * Created by halex on 10/22/16.
  */
-public interface SimpleStockCalculator {
+public interface StockCalculator {
 
-    BigDecimal calculate(String ticker, DomainContext repository) throws CalculationException;
+    BigDecimal calculate(String ticker, DomainContext context) throws CalculationException;
 }

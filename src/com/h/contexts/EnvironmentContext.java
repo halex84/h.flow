@@ -23,7 +23,7 @@ public class EnvironmentContext implements DomainContext {
         try{
             if (instance == null){
                 instance = new EnvironmentContext(LogFactory.makeLogger());
-                instance.setEventDispatcher(EnvironmentDispatcher.getInstance());
+                instance.setEventDispatcher(EventDispatcher.getInstance());
             }
             return instance;
         }
@@ -67,6 +67,23 @@ public class EnvironmentContext implements DomainContext {
             }
 
             return desk;
+        }
+        finally {
+            deskLock.unlock();
+        }
+    }
+
+    @Override
+    public Desk getDeskById(String deskId) {
+
+        deskLock.lock();
+        try {
+            if (desks.containsKey(deskId)){
+                return desks.get(deskId);
+            }
+            else{
+                return null;
+            }
         }
         finally {
             deskLock.unlock();
@@ -190,14 +207,23 @@ public class EnvironmentContext implements DomainContext {
     public void addEqTrade(EqTrade trade) throws CalculationException {
 
         log.append("Trade order arrived for processing.");
-        Stock stock = null;
+        Stock stock;
+        Desk desk;
         tradeLock.lock();
         log.append("Booking a trade.");
+        boolean tradeBooked = false;
         try {
             stock = getStockByTicker(trade.getTicker());
             if (stock == null){
                 throw new CalculationException("unknown ticker");
             }
+            desk = getDeskById(trade.getDeskId());
+            if (desk == null){
+                throw new CalculationException("unknown desk");
+            }
+            //ToDO domain internal callbacks during operations.
+            desk.onTradeAdding(this, trade);
+            //we can now add the trade.
             List<EqTrade> tickerTradeList;
             if (trades.containsKey(stock.getTicker())){
                 tickerTradeList = trades.get(stock.getTicker());
@@ -207,11 +233,13 @@ public class EnvironmentContext implements DomainContext {
                 trades.put(stock.getTicker(), tickerTradeList);
             }
             tickerTradeList.add(trade);
+            //and, done. with some coupling.
+            tradeBooked = true;
         }
         finally {
             tradeLock.unlock();
-            if (stock != null) {
-                eventDispatcher.dispatch(new EqTradeBooked(trade, stock, getEquityIndexesByComponent(stock)));
+            if (tradeBooked) {
+                eventDispatcher.dispatch(new EqTradeBooked(this, trade));
             }
         }
     }

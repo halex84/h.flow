@@ -3,9 +3,10 @@ package com.h.services;
 import com.h.contexts.CalculationException;
 import com.h.logging.LogFactory;
 import com.h.mkt.calc.*;
+import com.h.mkt.data.Desk;
 import com.h.mkt.data.EqIndex;
+import com.h.mkt.data.PortfolioMargin;
 import com.h.mkt.data.Stock;
-import com.h.contexts.EnvironmentContext;
 import com.h.contexts.DomainContext;
 import java.math.BigDecimal;
 
@@ -21,11 +22,9 @@ public class CalcDispatcher {
         this.context = context;
     }
 
-    //ToDo replace calculators with expressions.
-
     public BigDecimal pvCalc(String ticker) throws CalculationException {
 
-        SimpleStockCalculator pvCalc = new PvCalculator(LogFactory.makeLogger());
+        StockCalculator pvCalc = new StockPvCalculator(LogFactory.makeLogger());
         Stock stock = context.getStockByTicker(ticker);
         if (stock == null){
             throw new CalculationException("unknown ticker");
@@ -39,8 +38,8 @@ public class CalcDispatcher {
 
     public BigDecimal peCalc(String ticker) throws CalculationException {
 
-        SimpleStockCalculator pvCalc = new PvCalculator(LogFactory.makeLogger());
-        SimpleStockCalculator peCalc = new PeCalculator(LogFactory.makeLogger(), pvCalc);
+        StockCalculator pvCalc = new StockPvCalculator(LogFactory.makeLogger());
+        StockCalculator peCalc = new StockPeCalculator(LogFactory.makeLogger(), pvCalc);
         Stock stock = context.getStockByTicker(ticker);
         if (stock == null){
             throw new CalculationException("unknown ticker");
@@ -50,8 +49,8 @@ public class CalcDispatcher {
 
     public BigDecimal dividendYieldCalc(String ticker) throws CalculationException {
 
-        SimpleStockCalculator pvCalc = new PvCalculator(LogFactory.makeLogger());
-        SimpleStockCalculator dyCalc = new DividendYieldCalculator(LogFactory.makeLogger(), pvCalc);
+        StockCalculator pvCalc = new StockPvCalculator(LogFactory.makeLogger());
+        StockCalculator dyCalc = new StockDividendYieldCalculator(LogFactory.makeLogger(), pvCalc);
         Stock stock = context.getStockByTicker(ticker);
         if (stock == null){
             throw new CalculationException("unknown ticker");
@@ -61,8 +60,8 @@ public class CalcDispatcher {
 
     public BigDecimal calcIndex(String ticker) throws CalculationException {
 
-        SimpleStockCalculator pvCalc = new PvCalculator(LogFactory.makeLogger());
-        SimpleStockCalculator idxPvCalc = new EqIndexValueCalculator(LogFactory.makeLogger(), pvCalc);
+        StockCalculator pvCalc = new StockPvCalculator(LogFactory.makeLogger());
+        StockCalculator idxPvCalc = new EqIndexValueCalculator(LogFactory.makeLogger(), pvCalc);
         EqIndex index = context.getEquityIndexByTicker(ticker);
         if (index == null){
             throw new CalculationException("unknown eq. index");
@@ -72,8 +71,23 @@ public class CalcDispatcher {
 
     public BigDecimal calcIndexAllStocks() throws CalculationException {
 
-        SimpleStockCalculator pvCalc = new PvCalculator(LogFactory.makeLogger());
-        SimpleStockCalculator idxPvCalc = new AllStocksIndexValueCalculator(LogFactory.makeLogger(), pvCalc);
+        StockCalculator pvCalc = new StockPvCalculator(LogFactory.makeLogger());
+        StockCalculator idxPvCalc = new AllStocksIndexValueCalculator(LogFactory.makeLogger(), pvCalc);
         return idxPvCalc.calculate(null, context);
+    }
+
+    public BigDecimal calcDeskPortfolioMargin(String deskId, String portfolioId) throws CalculationException {
+
+        Desk desk = context.getDeskById(deskId);
+        if (desk == null){
+            throw new CalculationException("unknown desk");
+        }
+        StockCalculator pvCalc = new StockPvCalculator(LogFactory.makeLogger());
+        PortfolioMarginCalculator marginCalculator = new PortfolioMarginCalculator(LogFactory.makeLogger(), pvCalc);
+        PortfolioMargin margin = desk.getPortfolioMargin(context, marginCalculator, portfolioId);
+        if (margin == null){
+            throw new CalculationException("unknown portfolio");
+        }
+        return margin.getTotalMargin();
     }
 }

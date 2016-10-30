@@ -11,17 +11,17 @@ import java.math.BigDecimal;
  */
 public class EqIndexValueCalculator extends IndexValueCalculator {
 
-    public EqIndexValueCalculator(Logger logger, SimpleStockCalculator stockPvCalc){
+    public EqIndexValueCalculator(Logger logger, StockCalculator stockPvCalc){
         super(logger, stockPvCalc);
     }
 
     @Override
-    public BigDecimal calculate(String ticker, DomainContext repository) throws CalculationException {
+    public BigDecimal calculate(String ticker, DomainContext context) throws CalculationException {
 
         log.append("Calculating value of index %s.", new Object[]{ticker});
 
-        EqIndex eqIndex = repository.getOrAddEquityIndexByTicker(ticker);
-        BigDecimal idxPv = calculate(eqIndex.getComponents(), repository);
+        EqIndex eqIndex = context.getOrAddEquityIndexByTicker(ticker);
+        BigDecimal idxPv = calculate(eqIndex.getComponents(), context);
 
         log.append("Calculated value of index %s: %s.", new Object[]{ticker, idxPv});
 

@@ -10,15 +10,15 @@ import java.math.BigDecimal;
  */
 public class AllStocksIndexValueCalculator extends IndexValueCalculator {
 
-    public AllStocksIndexValueCalculator(Logger logger, SimpleStockCalculator stockPvCalc){
+    public AllStocksIndexValueCalculator(Logger logger, StockCalculator stockPvCalc){
         super(logger, stockPvCalc);
     }
 
     @Override
-    public BigDecimal calculate(String ticker, DomainContext repository) throws CalculationException {
+    public BigDecimal calculate(String ticker, DomainContext context) throws CalculationException {
 
         log.append("Calculating value of all stocks index.");
-        BigDecimal idxPv = calculate(repository.getStocks(), repository);
+        BigDecimal idxPv = calculate(context.getStocks(), context);
         log.append("Calculated value of all stocks index: %s.", new Object[]{idxPv});
         return idxPv;
     }

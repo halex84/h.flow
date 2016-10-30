@@ -11,24 +11,24 @@ import java.math.RoundingMode;
 /**
  * Created by halex on 10/22/16.
  */
-public class DividendYieldCalculator implements SimpleStockCalculator {
+public class StockDividendYieldCalculator implements StockCalculator {
 
     private final Logger log;
-    private final SimpleStockCalculator stockPvCalculator;
+    private final StockCalculator stockPvCalculator;
 
-    public DividendYieldCalculator(Logger logger, SimpleStockCalculator pvCalc){
+    public StockDividendYieldCalculator(Logger logger, StockCalculator pvCalc){
         log = logger;
         stockPvCalculator = pvCalc;
     }
 
     @Override
-    public BigDecimal calculate(String ticker, DomainContext repository) throws CalculationException {
+    public BigDecimal calculate(String ticker, DomainContext context) throws CalculationException {
 
         log.append("Calculating dividend yield of %s.", new Object[]{ticker});
 
-        Stock stock = repository.getStockByTicker(ticker);
+        Stock stock = context.getStockByTicker(ticker);
 
-        BigDecimal pv = stock.getCurrentPv(repository, stockPvCalculator);
+        BigDecimal pv = stock.getCurrentPv(context, stockPvCalculator);
         BigDecimal div = stock.getLastOrPreferredDividend();
         BigDecimal dy;
         

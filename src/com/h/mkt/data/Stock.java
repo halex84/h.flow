@@ -2,7 +2,7 @@ package com.h.mkt.data;
 
 import com.h.contexts.CalculationException;
 import com.h.logging.Logger;
-import com.h.mkt.calc.SimpleStockCalculator;
+import com.h.mkt.calc.StockCalculator;
 import com.h.contexts.DomainContext;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -55,7 +55,7 @@ public class Stock {
     //a note on locks:
     //if an invalidation occurs @ the moment when a value is retrieved, those are still good results.
     //a calculation will always have to wait for the repository to finish updating, thus will always be correct.
-    //if we were to aggressively lock we might get a deadlock between the PvCalculator and addEqTrade in the repo.
+    //if we were to aggressively lock we might get a deadlock between the StockPvCalculator and addEqTrade in the repo.
 
     public void update(StockType type, double lastDividend, double parValue, double parValueDividendPct) {
 
@@ -84,7 +84,7 @@ public class Stock {
         log.append("Invalidated ticker calculation results: %s.", new String[]{ticker});
     }
 
-    public BigDecimal getCurrentPv(DomainContext repository, SimpleStockCalculator calculator) throws CalculationException {
+    public BigDecimal getCurrentPv(DomainContext repository, StockCalculator calculator) throws CalculationException {
 
         if (isPvValid){
             return pv;
@@ -94,7 +94,7 @@ public class Stock {
         return pv;
     }
 
-    public BigDecimal getCurrentPe(DomainContext repository, SimpleStockCalculator calculator) throws CalculationException {
+    public BigDecimal getCurrentPe(DomainContext repository, StockCalculator calculator) throws CalculationException {
 
         if (isPeValid) {
             return pe;
@@ -104,7 +104,7 @@ public class Stock {
         return pe;
     }
 
-    public BigDecimal getCurrentDy(DomainContext repository, SimpleStockCalculator calculator) throws CalculationException {
+    public BigDecimal getCurrentDy(DomainContext repository, StockCalculator calculator) throws CalculationException {
 
         if (isDyValid){
             return dy;

@@ -2,7 +2,7 @@ package com.h.mkt.data;
 
 import com.h.contexts.CalculationException;
 import com.h.logging.Logger;
-import com.h.mkt.calc.SimpleStockCalculator;
+import com.h.mkt.calc.StockCalculator;
 import com.h.contexts.DomainContext;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -109,7 +109,7 @@ public class EqIndex {
         log.append("Invalidated index value: %s.", new String[]{ticker});
     }
 
-    public BigDecimal getCurrentValue(DomainContext repository, SimpleStockCalculator indexPvCalculator) throws CalculationException {
+    public BigDecimal getCurrentValue(DomainContext repository, StockCalculator indexPvCalculator) throws CalculationException {
 
         if (isPvValid) {
             return pv;
