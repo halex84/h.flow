@@ -221,8 +221,6 @@ public class EnvironmentContext implements DomainContext {
             if (desk == null){
                 throw new CalculationException("unknown desk");
             }
-            //ToDO domain internal callbacks during operations.
-            desk.onTradeAdding(this, trade);
             //we can now add the trade.
             List<EqTrade> tickerTradeList;
             if (trades.containsKey(stock.getTicker())){
@@ -232,8 +230,13 @@ public class EnvironmentContext implements DomainContext {
                 tickerTradeList = new ArrayList<>();
                 trades.put(stock.getTicker(), tickerTradeList);
             }
+            //ToDO domain internal callbacks during operations.
+            desk.onTradeAdding(this, trade);
+            for (Desk d : desks.values()){
+                d.invalidatePortfolioMarginByEqPosition(trade.getTicker());
+            }
+            //and, done, with some coupling here above.
             tickerTradeList.add(trade);
-            //and, done. with some coupling.
             tradeBooked = true;
         }
         finally {

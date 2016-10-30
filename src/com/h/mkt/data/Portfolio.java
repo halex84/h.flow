@@ -37,6 +37,12 @@ public class Portfolio {
         return portfolioId;
     }
 
+    public void invalidatePortfolioMargin(){
+
+        isMarginValid = false;
+        log.append("Invalidated portfolio margin calculation.");
+    }
+
     public PortfolioMargin getPortfolioMargin(DomainContext context, MarginCalculator calculator) throws CalculationException {
 
         if (isMarginValid){
@@ -75,9 +81,11 @@ public class Portfolio {
                 for (EqTrade t : kt){
                     sum += t.getLongShortPosition();
                 }
-                netPerTicker.put(key, sum);
+                if (sum != 0){
+                    netPerTicker.put(key, sum);
+                }
             }
-            return  netPerTicker;
+            return netPerTicker;
         }
         finally {
             tradeLock.unlock();
@@ -97,8 +105,7 @@ public class Portfolio {
                 trades.put(trade.getTicker(), tickerTradeList);
             }
             tickerTradeList.add(trade);
-            isMarginValid = false;
-            log.append("Invalidated portfolio margin calculation.");
+            invalidatePortfolioMargin();
         }
         finally {
             tradeLock.unlock();

@@ -74,6 +74,18 @@ public class Desk implements SimpleTradingDesk {
     }
 
     /**
+     * Invalidates all portfolio margins with open positions in this ticker.
+     */
+    public void invalidatePortfolioMarginByEqPosition(String ticker){
+
+        portfolios
+                .values()
+                .stream()
+                .filter(p -> p.getNetEquityPositions().keySet().contains(ticker))
+                .forEach(Portfolio::invalidatePortfolioMargin);
+    }
+
+    /**
      * Returns margin of the portfolio with the given id, or null if not found.
      */
     public PortfolioMargin getPortfolioMargin(DomainContext context, MarginCalculator calculator, String portfolioId) throws CalculationException {

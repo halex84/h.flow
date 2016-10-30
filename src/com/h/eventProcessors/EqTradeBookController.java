@@ -25,9 +25,7 @@ public class EqTradeBookController implements DomainEventObserver<EqTradeBooked>
     @Override
     public void notifyAsync(EqTradeBooked... args) throws CalculationException {
 
-        log.append("Invalidating relevant index and ticker calculations.");/*
-
-        throw  new CalculationException("fail!");*/
+        log.append("Invalidating relevant index and ticker calculations.");
 
         args[0].getTradedStock().invalidateCalculationResults();
         args[0].getTradedStockOverlayingIndexes().forEach(EqIndex::invalidateCalculationResults);
